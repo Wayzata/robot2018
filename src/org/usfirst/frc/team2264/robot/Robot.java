@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2264.robot;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,10 +14,15 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	final String defaultAuto = "Default";
-	final String customAuto = "My Auto";
+	final String rightAuto = "Right";
+	final String leftAuto = "Left";
+	final String centerAuto = "Center";
+	CANTalon left;
+	CANTalon right;
 	String autoSelected;
+	int side;
 	SendableChooser<String> chooser = new SendableChooser<>();
+	autonomous auto;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -23,8 +30,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		chooser.addDefault("Default Auto", defaultAuto);
-		chooser.addObject("My Auto", customAuto);
+		chooser.addObject("Right auto", rightAuto);
+		chooser.addObject("Left auto", leftAuto);
+		chooser.addDefault("Center auto", centerAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 	}
 
@@ -42,6 +50,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		autoSelected = chooser.getSelected();
+		
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
@@ -53,10 +62,16 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		switch (autoSelected) {
-		case customAuto:
-			// Put custom auto code here
+		case leftAuto:
+			side=0;
+			auto.side(left, right, side);
 			break;
-		case defaultAuto:
+		case centerAuto:
+			auto.center(left, right);
+			break;
+		case rightAuto:
+			side=1;
+			auto.side(left, right, side);
 		default:
 			// Put default auto code here
 			break;
