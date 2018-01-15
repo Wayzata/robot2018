@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2264.robot;
 
+import com.ctre.phoenix.motorcontrol.can.*;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -12,10 +14,21 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * directory.
  */
 public class Robot extends IterativeRobot {
-	final String defaultAuto = "Default";
-	final String customAuto = "My Auto";
+	final String driveAuto = "drive straight";
+	final String centerAuto = "Center Auto";
+	final String leftAuto= "Left Auto";
+	final String rightAuto= "Right Auto";
+	//final String straightSwitch= "Straight Switch";
+	final String noAuto= "no Auto";
+	TalonSRX left;
+	TalonSRX right;
 	String autoSelected;
+	int side;
+	String gameData= DriverStation.getInstance().getGameMessage();
+	long autoStartTime;
+	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
+	autonomous auto;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -23,8 +36,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void robotInit() {
-		chooser.addDefault("Default Auto", defaultAuto);
-		chooser.addObject("My Auto", customAuto);
+		//chooser.addObject("Straight Switch", straightSwitch);
+		chooser.addObject("Center Auto", centerAuto);
+		chooser.addObject("Left Auto", leftAuto);
+		chooser.addObject("Right Auto", rightAuto);
+		chooser.addObject("Drive straight", driveAuto);
+		chooser.addDefault("no auto", noAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 	}
 
@@ -41,7 +58,9 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		this.autoStartTime = System.currentTimeMillis();
 		autoSelected = chooser.getSelected();
+		
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
@@ -53,12 +72,32 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		switch (autoSelected) {
-		case customAuto:
-			// Put custom auto code here
+		case leftAuto:
+			if(auto.getSwitch(gameData, 0)){
+			auto.leftLeft(left, right);
+			}
+			else{
+				auto.leftRight(left, right);
+			}
 			break;
-		case defaultAuto:
+		case rightAuto:
+			if(auto.getSwitch(gameData, 1)){
+			auto.rightRight(left, right);
+			}
+			else{
+				auto.rightLeft(left,right);
+			}
+		case centerAuto:
+			//auto.center(left, right);
+			break;
+		//case straightSwitch:
+			side=1;
+		//	auto.sideChoice(left, right, side);
+		case driveAuto:
+			timeInAuto=System.currentTimeMillis()- autoStartTime;
+			auto.crossLineAuto(left, right, timeInAuto);
 		default:
-			// Put default auto code here
+			auto.noAuto(left, right);
 			break;
 		}
 	}
