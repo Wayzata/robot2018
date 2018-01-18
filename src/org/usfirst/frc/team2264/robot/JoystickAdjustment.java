@@ -1,5 +1,6 @@
-package org.usfirst.frc.team2264.robot;
 // @author Cameron
+
+package org.usfirst.frc.team2264.robot;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;

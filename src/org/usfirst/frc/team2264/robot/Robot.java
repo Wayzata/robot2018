@@ -1,8 +1,13 @@
 package org.usfirst.frc.team2264.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import org.usfirst.frc.team2264.robot.*;
+import edu.wpi.first.wpilibj.Joystick.*;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -16,16 +21,24 @@ public class Robot extends IterativeRobot {
 	final String customAuto = "My Auto";
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
+	TalonSRX leftMotor;
+	TalonSRX rightMotor;
+	Joystick leftJoystick;
+	Joystick rightJoystick;
 
 	/**
 	 * This function is run when the robot is first started up and should be
-	 * used for any initialization code.
+	 * used for any initialization code
 	 */
 	@Override
 	public void robotInit() {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		leftMotor = new TalonSRX(1); // REPLACE NUMBER
+		rightMotor = new TalonSRX(2); // REPLACE NUMBER
+		leftJoystick = new Joystick(1); //REPLACE NUMBER
+		rightJoystick = new Joystick(2); //REPLACE NUMBER
 	}
 
 	/**
@@ -75,6 +88,13 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		driveTrain(leftJoystick, rightJoystick);
 	}
-}
 
+
+	public void driveTrain(Joystick leftJoystick, Joystick rightJoystick) {
+		leftMotor.set(null, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
+		rightMotor.set(null, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+	}
+
+}
