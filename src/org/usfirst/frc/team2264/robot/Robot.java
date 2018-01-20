@@ -1,8 +1,15 @@
 package org.usfirst.frc.team2264.robot;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
+
+import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+<<<<<<< Updated upstream
+=======
+import edu.wpi.first.wpilibj.Joystick;
+>>>>>>> Stashed changes
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -25,12 +32,13 @@ public class Robot extends IterativeRobot {
 	TalonSRX right;
 	String autoSelected;
 	int side;
-	String gameData= DriverStation.getInstance().getGameMessage();
+	//String gameData= DriverStation.getInstance().getGameMessage();//commented because we do not have access to gameMessage
+	String gameData = "LRR";//just a random config for the field state
 	long autoStartTime;
 	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	autonomous auto;
-	Gyro gyro = null;
+	ADXRS450_Gyro Gyro;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -45,6 +53,9 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Drive straight", driveAuto);
 		chooser.addDefault("no auto", noAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		Gyro = new ADXRS450_Gyro();
+		right = new TalonSRX(2);
+		left = new TalonSRX(1);
 	}
 
 	/**
@@ -66,6 +77,14 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
+		SmartDashboard.putString("Automode: ", autoSelected);
+		left.set(ControlMode.PercentOutput, -6);
+		right.set(ControlMode.PercentOutput, .6);
+		while(timeInAuto < 500) {
+			timeInAuto = System.currentTimeMillis() - autoStartTime;
+		}
+		left.set(ControlMode.PercentOutput, 0);
+		right.set(ControlMode.PercentOutput, 0);
 	}
 
 	/**
@@ -77,24 +96,24 @@ public class Robot extends IterativeRobot {
 		switch (autoSelected) {
 		case leftAuto:
 			if(auto.getSwitch(gameData, 0)){
-			auto.leftLeft(left, right, timeInAuto, gyro);
+			auto.leftLeft(left, right, timeInAuto, Gyro);
 			}
 			else{
-				auto.leftRight(left, right, timeInAuto, gyro);
+				auto.leftRight(left, right, timeInAuto, Gyro);
 			}
 			break;
 		case rightAuto:
 			if(auto.getSwitch(gameData, 1)){
-			auto.rightRight(left, right, timeInAuto, gyro);
+			auto.rightRight(left, right, timeInAuto, Gyro);
 			}
 			else{
-				auto.rightLeft(left,right, timeInAuto, gyro);
+				auto.rightLeft(left,right, timeInAuto, Gyro);
 			}
 		case centerAuto:
 			//auto.center(left, right);
 			break;
 		//case straightSwitch:
-			side=1;
+			//side=1;
 		//	auto.sideChoice(left, right, side);
 		case driveAuto:
 			
