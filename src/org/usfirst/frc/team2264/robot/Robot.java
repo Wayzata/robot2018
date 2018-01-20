@@ -3,6 +3,7 @@ package org.usfirst.frc.team2264.robot;
 import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -29,6 +30,7 @@ public class Robot extends IterativeRobot {
 	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	autonomous auto;
+	Gyro gyro = null;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -71,21 +73,22 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		timeInAuto=System.currentTimeMillis()- autoStartTime;
 		switch (autoSelected) {
 		case leftAuto:
 			if(auto.getSwitch(gameData, 0)){
-			auto.leftLeft(left, right);
+			auto.leftLeft(left, right, timeInAuto, gyro);
 			}
 			else{
-				auto.leftRight(left, right);
+				auto.leftRight(left, right, timeInAuto, gyro);
 			}
 			break;
 		case rightAuto:
 			if(auto.getSwitch(gameData, 1)){
-			auto.rightRight(left, right);
+			auto.rightRight(left, right, timeInAuto, gyro);
 			}
 			else{
-				auto.rightLeft(left,right);
+				auto.rightLeft(left,right, timeInAuto, gyro);
 			}
 		case centerAuto:
 			//auto.center(left, right);
@@ -94,7 +97,7 @@ public class Robot extends IterativeRobot {
 			side=1;
 		//	auto.sideChoice(left, right, side);
 		case driveAuto:
-			timeInAuto=System.currentTimeMillis()- autoStartTime;
+			
 			auto.crossLineAuto(left, right, timeInAuto);
 		default:
 			auto.noAuto(left, right);
