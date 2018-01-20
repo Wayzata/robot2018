@@ -20,14 +20,17 @@ import  edu.wpi.first.wpilibj.ADXRS450_Gyro;
 public class Robot extends IterativeRobot {
 	final String defaultAuto = "Default";
 	final String customAuto = "My Auto";
+	double gyroInitial;
+	double gyroTrack;
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	TalonSRX leftMotor;
 	TalonSRX rightMotor;
-	Joystick leftJoystick;
+	Joystick leftJoystick; 
 	Joystick rightJoystick;
 	ADXRS450_Gyro Gyro;
 	ControlMode mode;
+	
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -38,11 +41,19 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		leftMotor = new TalonSRX(25); // REPLACE NUMBER
-		rightMotor = new TalonSRX(26); // REPLACE NUMBER
-		leftJoystick = new Joystick(0); //REPLACE NUMBER
-		rightJoystick = new Joystick(1); //REPLACE NUMBER
+		leftMotor = new TalonSRX(25); // Veronica: 25; Bob: 1
+		rightMotor = new TalonSRX(26); // Veronica: 26; Bob: 2
+		leftJoystick = new Joystick(0);
+		rightJoystick = new Joystick(1);
 		Gyro = new ADXRS450_Gyro();
+		mode = ControlMode.PercentOutput;
+		gyroInitial = Gyro.getAngle();
+		for(int i = 0; i < 5; i++) {
+			gyroTrack = gyroTrack + Gyro.getAngle();
+		}
+		if(gyroTrack == (5 * gyroInitial)) {
+			throw new RuntimeException();
+		}
 	}
 
 	/**
@@ -62,7 +73,7 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
-		System.out.println("fkl);sdjf;lsdfjkldflkdfj");
+		Gyro.calibrate();
 	}
 
 	/**
@@ -70,7 +81,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
-		leftMotor.set(ControlMode.PercentOutput, .6);
+		SmartDashboard.putNumber("Gyro Data:", Gyro.getAngle());
+		
 		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
