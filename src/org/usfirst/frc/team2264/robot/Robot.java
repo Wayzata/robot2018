@@ -6,10 +6,6 @@ import com.ctre.phoenix.motorcontrol.can.*;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.IterativeRobot;
-<<<<<<< Updated upstream
-=======
-import edu.wpi.first.wpilibj.Joystick;
->>>>>>> Stashed changes
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -56,6 +52,7 @@ public class Robot extends IterativeRobot {
 		Gyro = new ADXRS450_Gyro();
 		right = new TalonSRX(2);
 		left = new TalonSRX(1);
+		auto = new autonomous();
 	}
 
 	/**
@@ -74,17 +71,9 @@ public class Robot extends IterativeRobot {
 		this.autoStartTime = System.currentTimeMillis();
 		autoSelected = chooser.getSelected();
 		
-		// autoSelected = SmartDashboard.getString("Auto Selector",
-		// defaultAuto);
+		autoSelected = SmartDashboard.getString("Auto Selector", autoSelected);
 		System.out.println("Auto selected: " + autoSelected);
 		SmartDashboard.putString("Automode: ", autoSelected);
-		left.set(ControlMode.PercentOutput, -6);
-		right.set(ControlMode.PercentOutput, .6);
-		while(timeInAuto < 500) {
-			timeInAuto = System.currentTimeMillis() - autoStartTime;
-		}
-		left.set(ControlMode.PercentOutput, 0);
-		right.set(ControlMode.PercentOutput, 0);
 	}
 
 	/**

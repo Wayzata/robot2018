@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 
 public class autonomous {
 	char switchPlacement;
-	double motorPer=.5;
+	double motorPer=.2;
 	int driveTime=4000;
 	final static int sameSideStop1 = 1000, sameSideStop2 = 2000;//determines for how long the robot will drive forward during the leftLeft and rightRight autos
 	final static int oppSideStop1 = 2000, oppSideStop2 = 4000, oppSideStop3 = 6000;//determines for how long the robot will drive forward during the leftRight and rightLeft autos
@@ -32,8 +32,8 @@ public class autonomous {
 	}
 		public void driveForward(TalonSRX left, TalonSRX right){
 			
-			left.set(ControlMode.PercentOutput, -1 * motorPer);
-			right.set(ControlMode.PercentOutput, .943 * motorPer);
+			left.set(ControlMode.PercentOutput, -.1 * motorPer);
+			right.set(ControlMode.PercentOutput, .1 * motorPer);
 			//left.set(ControlMode.PercentOutput, motorPer);
 			//right.set(ControlMode.PercentOutput, -1 * motorPer);
 		}
@@ -59,7 +59,7 @@ public class autonomous {
 		
 		//side = driver station placement, 0=left side, 1=right side
 		public void leftLeft(TalonSRX left, TalonSRX right, long time, ADXRS450_Gyro gyro){
-			//if driver station is on the left and our switch is on the left
+			/*//if driver station is on the left and our switch is on the left
 			if(time < sameSideStop1) {
 				driveForward(left, right);
 			}
@@ -71,7 +71,9 @@ public class autonomous {
 			}
 			else {
 				//drop the cube
-			}
+			}*/
+			if(time < sameSideStop1)
+				driveForward(left, right);
 		}
 		
 		public void leftRight(TalonSRX left, TalonSRX right, long time, ADXRS450_Gyro gyro){
