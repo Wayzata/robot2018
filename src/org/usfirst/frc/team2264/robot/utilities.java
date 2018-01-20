@@ -7,12 +7,14 @@ public class utilities {
 	public static double angleDifference(double currentAngle, double goalAngle){
 		
 		double rawDiff= (goalAngle-currentAngle)%360;
-		SmartDashboard.putNumber("Gyro- Raw difference", rawDiff);
 		if ((rawDiff)<=180){
+			SmartDashboard.putNumber("Gyro-rawDifference", rawDiff);
+
 			return rawDiff;
 		}
 		else{
-			SmartDashboard.putNumber("Gyro- Raw different", 360-rawDiff);
+			SmartDashboard.putNumber("Gyro-rawDifference", 360-rawDiff);
+
 			return (360-rawDiff);
 		}
 		

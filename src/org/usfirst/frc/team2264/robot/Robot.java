@@ -31,7 +31,6 @@ public class Robot extends IterativeRobot {
 	Joystick rightJoystick;
 	ADXRS450_Gyro Gyro;
 	ControlMode mode;
-	RobotChoice whichRobot = RobotChoice.VERONICA;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -47,7 +46,7 @@ public class Robot extends IterativeRobot {
 			leftMotor = new TalonSRX(25);
 			rightMotor = new TalonSRX(26);
 		}
-		else {
+		else if(whichRobot == RobotChoice.BOB) {
 			leftMotor = new TalonSRX(1);
 			rightMotor = new TalonSRX(2);
 		}
@@ -111,6 +110,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		utilities.angleDifference(Gyro.getAngle(), 40);
 		driveTrain(leftJoystick, rightJoystick);
 		SmartDashboard.putNumber("Gyro Data", Gyro.getAngle());
 	}
