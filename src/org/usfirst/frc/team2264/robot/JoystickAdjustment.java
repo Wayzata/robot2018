@@ -21,7 +21,10 @@ public class JoystickAdjustment {
 	
 	static double getLeft(Joystick leftJoystick, Joystick rightJoystick) {
 		
-		if(rightJoystick.getY(GenericHID.Hand.kRight) - leftJoystick.getY(GenericHID.Hand.kLeft) <= 0.10) {
+		return leftJoystick.getY(GenericHID.Hand.kLeft);
+		
+		// The commented out code is for human-error adjustment
+		/*if(rightJoystick.getY(GenericHID.Hand.kRight) - leftJoystick.getY(GenericHID.Hand.kLeft) <= 0.05) {
 			
 			SmartDashboard.putNumber("Left Joystick: ", rightJoystick.getY(GenericHID.Hand.kRight));
 			return rightJoystick.getY(GenericHID.Hand.kRight);
@@ -29,7 +32,7 @@ public class JoystickAdjustment {
 		else {
 			SmartDashboard.putNumber("Left Joystick: ", leftJoystick.getY(GenericHID.Hand.kLeft));
 			return leftJoystick.getY(GenericHID.Hand.kLeft);
-		}
+		} */
 	}
 	
 	static double getRight(Joystick rightJoystick) {
