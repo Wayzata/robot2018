@@ -24,7 +24,7 @@ public class Robot extends IterativeRobot {
 	TalonSRX right;
 	String autoSelected;
 	int side;
-	String gameData= DriverStation.getInstance().getGameMessage();
+	String gameData= DriverStation.getInstance().getGameSpecificMessage();
 	long autoStartTime;
 	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
