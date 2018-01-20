@@ -42,18 +42,7 @@ public class Robot extends IterativeRobot {
 		rightMotor = new TalonSRX(26); // REPLACE NUMBER
 		leftJoystick = new Joystick(0); //REPLACE NUMBER
 		rightJoystick = new Joystick(1); //REPLACE NUMBER
-	
 		Gyro = new ADXRS450_Gyro();
-		for(int i = 0; i < 5; i++) {
-			
-			SmartDashboard.putNumber("Gyro Data:", Gyro.getAngle());
-			try {
-					wait(3000);
-			}
-			catch(Exception e) {
-				System.out.println("Raf sucks at managing threads :(");
-			}
-		}
 	}
 
 	/**
@@ -98,16 +87,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		for(int i = 0; i < 5; i++) {
-			
-				SmartDashboard.putNumber("Gyro Data:", Gyro.getAngle());
-				try {
-					wait(3000);
-				}
-				catch(Exception e) {
-					System.out.println("Raf sucks at managing threads :(");
-				}
-		}
+		driveTrain(leftJoystick, rightJoystick);
+		SmartDashboard.putNumber("Gyro Data", Gyro.getAngle());
 	}
 
 	/**
@@ -121,7 +102,7 @@ public class Robot extends IterativeRobot {
 
 	public void driveTrain(Joystick leftJoystick, Joystick rightJoystick) {
 		leftMotor.set(ControlMode.PercentOutput, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
-		rightMotor.set(ControlMode.PercentOutput, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+		rightMotor.set(ControlMode.PercentOutput, -1 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
 	}
 
 }
