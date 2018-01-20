@@ -4,9 +4,10 @@ import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import org.usfirst.frc.team2264.robot.*;
-import edu.wpi.first.wpilibj.Joystick.*;
+import  edu.wpi.first.wpilibj.ADXRS450_Gyro;
 
 
 /**
@@ -25,6 +26,8 @@ public class Robot extends IterativeRobot {
 	TalonSRX rightMotor;
 	Joystick leftJoystick;
 	Joystick rightJoystick;
+	ADXRS450_Gyro Gyro;
+	ControlMode mode;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -35,10 +38,22 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		leftMotor = new TalonSRX(1); // REPLACE NUMBER
-		rightMotor = new TalonSRX(2); // REPLACE NUMBER
-		leftJoystick = new Joystick(1); //REPLACE NUMBER
-		rightJoystick = new Joystick(2); //REPLACE NUMBER
+		leftMotor = new TalonSRX(25); // REPLACE NUMBER
+		rightMotor = new TalonSRX(26); // REPLACE NUMBER
+		leftJoystick = new Joystick(0); //REPLACE NUMBER
+		rightJoystick = new Joystick(1); //REPLACE NUMBER
+	
+		Gyro = new ADXRS450_Gyro();
+		for(int i = 0; i < 5; i++) {
+			
+			SmartDashboard.putNumber("Gyro Data:", Gyro.getAngle());
+			try {
+					wait(3000);
+			}
+			catch(Exception e) {
+				System.out.println("Raf sucks at managing threads :(");
+			}
+		}
 	}
 
 	/**
@@ -58,6 +73,7 @@ public class Robot extends IterativeRobot {
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
+		System.out.println("fkl);sdjf;lsdfjkldflkdfj");
 	}
 
 	/**
@@ -65,6 +81,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		leftMotor.set(ControlMode.PercentOutput, .6);
 		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
@@ -81,6 +98,16 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		for(int i = 0; i < 5; i++) {
+			
+				SmartDashboard.putNumber("Gyro Data:", Gyro.getAngle());
+				try {
+					wait(3000);
+				}
+				catch(Exception e) {
+					System.out.println("Raf sucks at managing threads :(");
+				}
+		}
 	}
 
 	/**
@@ -93,8 +120,8 @@ public class Robot extends IterativeRobot {
 
 
 	public void driveTrain(Joystick leftJoystick, Joystick rightJoystick) {
-		leftMotor.set(null, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
-		rightMotor.set(null, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+		leftMotor.set(ControlMode.PercentOutput, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
+		rightMotor.set(ControlMode.PercentOutput, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
 	}
 
 }
