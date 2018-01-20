@@ -22,6 +22,7 @@ public class Robot extends IterativeRobot {
 	final String customAuto = "My Auto";
 	double gyroInitial;
 	double gyroTrack;
+	boolean gyroPluggedIn;
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	TalonSRX leftMotor;
@@ -30,7 +31,7 @@ public class Robot extends IterativeRobot {
 	Joystick rightJoystick;
 	ADXRS450_Gyro Gyro;
 	ControlMode mode;
-	
+	RobotChoice whichRobot = RobotChoice.VERONICA;
 
 	/**
 	 * This function is run when the robot is first started up and should be
@@ -41,8 +42,16 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		leftMotor = new TalonSRX(25); // Veronica: 25; Bob: 1
-		rightMotor = new TalonSRX(26); // Veronica: 26; Bob: 2
+
+		if(whichRobot == RobotChoice.VERONICA) {
+			leftMotor = new TalonSRX(25);
+			rightMotor = new TalonSRX(26);
+		}
+		else {
+			leftMotor = new TalonSRX(1);
+			rightMotor = new TalonSRX(2);
+		}
+
 		leftJoystick = new Joystick(0);
 		rightJoystick = new Joystick(1);
 		Gyro = new ADXRS450_Gyro();
@@ -52,7 +61,10 @@ public class Robot extends IterativeRobot {
 			gyroTrack = gyroTrack + Gyro.getAngle();
 		}
 		if(gyroTrack == (5 * gyroInitial)) {
-			throw new RuntimeException();
+			gyroPluggedIn = false;
+		}
+		else {
+			gyroPluggedIn = true;
 		}
 	}
 
@@ -82,7 +94,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		SmartDashboard.putNumber("Gyro Data:", Gyro.getAngle());
-		
+
 		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
