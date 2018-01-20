@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot {
 	double gyroInitial;
 	double gyroTrack;
 	boolean gyroPluggedIn;
+	RobotChoice whichRobot;
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	TalonSRX leftMotor;
