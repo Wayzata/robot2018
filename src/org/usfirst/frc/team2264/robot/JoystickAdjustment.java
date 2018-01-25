@@ -1,4 +1,4 @@
-// @author Cameron
+// @author Cameron McCoy
 
 package org.usfirst.frc.team2264.robot;
 

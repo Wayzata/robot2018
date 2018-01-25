@@ -1,6 +1,6 @@
 /**
-* @author RafaelDubeau
-* @author DrakeJohnson
+* @author Rafael Dubeau
+* @author Drake Johnson
 * @author Preeti Pidatala
 * */
 

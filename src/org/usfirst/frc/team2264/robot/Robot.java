@@ -31,6 +31,7 @@ public class Robot extends IterativeRobot {
 	Joystick leftJoystick; 
 	Joystick rightJoystick;
 	ADXRS450_Gyro Gyro;
+	GyroHandler GyroHandle = new GyroHandler();
 	ControlMode mode;
 
 	/**
@@ -56,16 +57,7 @@ public class Robot extends IterativeRobot {
 		rightJoystick = new Joystick(1);
 		Gyro = new ADXRS450_Gyro();
 		mode = ControlMode.PercentOutput;
-		gyroInitial = Gyro.getAngle();
-		for(int i = 0; i < 5; i++) {
-			gyroTrack = gyroTrack + Gyro.getAngle();
-		}
-		if(gyroTrack == (5 * gyroInitial)) {
-			gyroPluggedIn = false;
-		}
-		else {
-			gyroPluggedIn = true;
-		}
+		
 	}
 
 	/**
@@ -86,6 +78,7 @@ public class Robot extends IterativeRobot {
 		// defaultAuto);
 		System.out.println("Auto selected: " + autoSelected);
 		Gyro.calibrate();
+		gyroPluggedIn = GyroHandle.checkIfGyroIsPluggedIn(Gyro);
 	}
 
 	/**
@@ -94,7 +87,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		SmartDashboard.putNumber("Gyro Data:", Gyro.getAngle());
-
 		switch (autoSelected) {
 		case customAuto:
 			// Put custom auto code here
@@ -102,8 +94,9 @@ public class Robot extends IterativeRobot {
 		case defaultAuto:
 		default:
 			// Put default auto code here
-			break;
+		break;
 		}
+		
 	}
 
 	/**
