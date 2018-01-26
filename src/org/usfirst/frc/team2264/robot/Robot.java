@@ -23,7 +23,7 @@ public class Robot extends IterativeRobot {
 	double gyroInitial;
 	double gyroTrack;
 	boolean gyroPluggedIn;
-	RobotChoice whichRobot;
+	RobotChoice whichRobot = RobotChoice.BOB;
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	TalonSRX leftMotor;
@@ -104,7 +104,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		utilities.angleDifference(Gyro.getAngle(), 40);
+		//utilities.angleDifference(Gyro.getAngle(), 40);
 		driveTrain(leftJoystick, rightJoystick);
 		SmartDashboard.putNumber("Gyro Data", Gyro.getAngle());
 	}
@@ -119,8 +119,8 @@ public class Robot extends IterativeRobot {
 
 
 	public void driveTrain(Joystick leftJoystick, Joystick rightJoystick) {
-		leftMotor.set(ControlMode.PercentOutput, JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
-		rightMotor.set(ControlMode.PercentOutput, -1 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+		leftMotor.set(ControlMode.PercentOutput, 0.6 *JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick)));
+		rightMotor.set(ControlMode.PercentOutput, 0.6 * -1 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
 	}
 
 }
