@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2264.robot;
 
+import javax.swing.JOptionPane;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.*;
 
@@ -29,7 +31,7 @@ public class Robot extends IterativeRobot {
 	String autoSelected;
 	int side;
 	//String gameData= DriverStation.getInstance().getGameMessage();//commented because we do not have access to gameMessage
-	String gameData = "LRR";//just a random config for the field state
+	String gameData = "LRR";//just a random configuration for the field state	Purely for testing
 	long autoStartTime;
 	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -50,8 +52,8 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("no auto", noAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		Gyro = new ADXRS450_Gyro();
-		right = new TalonSRX(2);
-		left = new TalonSRX(1);
+		right = new TalonSRX(1);
+		left = new TalonSRX(2);
 		auto = new autonomous();
 	}
 
@@ -74,6 +76,7 @@ public class Robot extends IterativeRobot {
 		autoSelected = SmartDashboard.getString("Auto Selector", autoSelected);
 		System.out.println("Auto selected: " + autoSelected);
 		SmartDashboard.putString("Automode: ", autoSelected);
+		Gyro.reset();
 	}
 
 	/**
@@ -82,10 +85,11 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousPeriodic() {
 		timeInAuto=System.currentTimeMillis()- autoStartTime;
+		SmartDashboard.putNumber("timeInAuto: ", timeInAuto);
 		switch (autoSelected) {
 		case leftAuto:
 			if(auto.getSwitch(gameData, 0)){
-			auto.leftLeft(left, right, timeInAuto, Gyro);
+				auto.leftLeft(left, right, timeInAuto, Gyro);
 			}
 			else{
 				auto.leftRight(left, right, timeInAuto, Gyro);
@@ -127,4 +131,3 @@ public class Robot extends IterativeRobot {
 	public void testPeriodic() {
 	}
 }
-
