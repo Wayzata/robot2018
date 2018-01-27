@@ -1,3 +1,5 @@
+//@author Cameron McCoy
+
 package org.usfirst.frc.team2264.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -31,15 +33,22 @@ public class Robot extends IterativeRobot {
 	TalonSRX right;
 	TalonSRX leftFront;
 	TalonSRX rightFront;
+	TalonSRX intakeLeft;
+	TalonSRX intakeRight;
+	TalonSRX conveyorLeft;
+	TalonSRX conveyorRight;
+	TalonSRX shooterLeft;
+	TalonSRX shooterRight;
 	Joystick leftJoystick; 
 	Joystick rightJoystick;
 	ADXRS450_Gyro Gyro;
 	GyroHandler GyroHandle = new GyroHandler();
 	AnalogInput LettuceAssimilator = new AnalogInput(0);
 	ControlMode mode;
-	Autonomous auto;//
-	long autoStartTime;//
-	long timeInAuto;//
+	Autonomous auto;
+	long autoStartTime;
+	long timeInAuto;
+	// final long lettuce = 76698484856769;
 
 	
 	/**
