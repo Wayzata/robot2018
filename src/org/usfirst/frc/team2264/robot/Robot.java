@@ -26,12 +26,6 @@ public class Robot extends IterativeRobot {
 	TalonSRX frontRight;
 	TalonSRX backLeft;
 	TalonSRX backRight;
-	TalonSRX intakeLeft;
-	TalonSRX intakeRight;
-	TalonSRX conveyorLeft;
-	TalonSRX conveyorRight;
-	TalonSRX shooterLeft;
-	TalonSRX shooterRight;
 	
 	//Gyro
 	ADXRS450_Gyro Gyro;
