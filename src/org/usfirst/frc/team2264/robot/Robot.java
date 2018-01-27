@@ -49,8 +49,10 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		leftMotor = new TalonSRX(4);
+		rightMotor = new TalonSRX(3);
 
-		if(whichRobot == RobotChoice.VERONICA) {
+		/*if(whichRobot == RobotChoice.VERONICA) {
 			leftMotor = new TalonSRX(25);
 			rightMotor = new TalonSRX(26);
 		}
@@ -58,7 +60,11 @@ public class Robot extends IterativeRobot {
 			leftMotor = new TalonSRX(2);
 			rightMotor = new TalonSRX(1);
 		}
-
+		else if(whichRobot == RobotChoice.MARS) {
+			leftMotor = new TalonSRX(4);
+			rightMotor = new TalonSRX(3);
+		}
+*/
 		leftJoystick = new Joystick(0);
 		rightJoystick = new Joystick(1);
 		Gyro = new ADXRS450_Gyro();

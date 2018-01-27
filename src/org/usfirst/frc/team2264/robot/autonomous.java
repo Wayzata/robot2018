@@ -14,7 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Autonomous {
 	char switchPlacement;
-	double motorPer=.5;
+	double motorPer=.2;
 	int driveTime=4000;
 	final static long sameSideStop1 = 2000, sameSideStop2 = 6000;//determines for how long the robot will drive forward during the leftLeft and rightRight autos
 	final static long oppSideStop1 = 2000, oppSideStop2 = 6000, oppSideStop3 = 10000;//determines for how long the robot will drive forward during the leftRight and rightLeft autos
@@ -54,7 +54,7 @@ public class Autonomous {
 		case 1:
 			//turn left
 			left.set(ControlMode.PercentOutput, -motorPer);
-			right.set(ControlMode.PercentOutput, .9 * motorPer);
+			right.set(ControlMode.PercentOutput, -.9 * motorPer);
 			break;
 		}
 	}
@@ -106,7 +106,7 @@ public class Autonomous {
 		if(time < sameSideStop1) {
 			driveForward(left, right);
 		}
-		else if (time >= sameSideStop1 && gyro.getAngle() > 270) {
+		else if (time >= sameSideStop1 && gyro.getAngle() > -90) {
 			turn(left, right, 1);
 		}
 		else if (gyro.getAngle() <= 270 && time < sameSideStop2) {
