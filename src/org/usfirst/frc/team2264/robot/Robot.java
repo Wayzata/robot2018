@@ -3,8 +3,10 @@ package org.usfirst.frc.team2264.robot;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -20,18 +22,29 @@ public class Robot extends IterativeRobot {
 	//Joysticks
 	Joystick leftJ;
 	Joystick rightJ;
+	XboxController controller;
 	
 	//Motors/Talons
 	TalonSRX frontLeft;
 	TalonSRX frontRight;
 	TalonSRX backLeft;
 	TalonSRX backRight;
+	TalonSRX intakeLeft;
+	TalonSRX intakeRight;
+	TalonSRX conveyorLeft;
+	TalonSRX conveyorRight;
+	TalonSRX shooterLeft;
+	TalonSRX shooterRight;
 	
 	//Gyro
 	ADXRS450_Gyro Gyro;
 	double gyroInitial;
 	double gyroTrack;
 	boolean gyroPluggedIn;
+	
+	Shooter shootyBoi = new Shooter();
+	Intake grabbyBoi = new Intake();
+	Conveyor movyBoi = new Conveyor();
 	
 	public void robotInit() {
 		
@@ -46,9 +59,12 @@ public class Robot extends IterativeRobot {
 		// Joysticks
 		leftJ = new Joystick(Variables.leftStickPort);
 		rightJ = new Joystick(Variables.rightStickPort);
+		controller = new XboxController(Variables.controllerPort);
 		
 		// Gyro
 		Gyro = new ADXRS450_Gyro();
+		
+		
 		
 	}
 	
@@ -66,8 +82,15 @@ public class Robot extends IterativeRobot {
 		
 		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
 	
+		if(Variables.whichRobot == RobotChoice.MARS) {
 		DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
-	
+		}
+		
+		else {
+			DriveTrain.MotorSetTwo(leftJ, rightJ, backLeft, backRight);
+		}
+		
+		checkButtons();
 	}
 	
 	public void autoPeriodic() {
@@ -79,6 +102,27 @@ public class Robot extends IterativeRobot {
 		// Cases for each auto option
 			//Calls a mehtod from the auto class based on case
 		
+	}
+	
+	void checkButtons() {
+		if(controller.getAButtonPressed()) {
+			shootyBoi.startShooter(shooterLeft, shooterRight);
+		}
+		if(controller.getBButtonPressed()) {
+			shootyBoi.stopShooter(shooterLeft, shooterRight);
+		}
+		if(controller.getXButtonPressed()) {
+			grabbyBoi.startIntake(intakeLeft, intakeRight);
+		}
+		if(controller.getYButtonPressed()) {
+			grabbyBoi.stopIntake(intakeLeft, intakeRight);
+		}
+		if(controller.getBumperPressed(GenericHID.Hand.kLeft)) {
+			movyBoi.startConveyor(conveyorLeft, conveyorRight);
+		}
+		if(controller.getBumperPressed(GenericHID.Hand.kRight)) {
+			movyBoi.stopConveyor(conveyorLeft, conveyorRight);
+		}
 	}
 	
 }

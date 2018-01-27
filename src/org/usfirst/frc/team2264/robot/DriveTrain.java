@@ -26,6 +26,17 @@ public class DriveTrain {
 		
 	}
 	
+	public static void MotorSetTwo(Joystick leftJ, Joystick rightJ, TalonSRX backL, TalonSRX backR) {
+
+			// Method to set the motors to the joystick readings
+
+		
+		backL.set(ControlMode.PercentOutput, -0.4 * sensitivityAdjustment(getLeft(leftJ)));
+		backR.set(ControlMode.PercentOutput, 0.4 * sensitivityAdjustment(getLeft(rightJ)));
+		
+	}
+	
+	
 	public static double getLeft(Joystick leftJ) {
 	
 		// Method to get the left joystick reading
