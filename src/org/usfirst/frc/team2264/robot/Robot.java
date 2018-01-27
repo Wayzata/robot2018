@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import  edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.AnalogInput;
 
 
 /**
@@ -32,8 +33,13 @@ public class Robot extends IterativeRobot {
 	Joystick rightJoystick;
 	ADXRS450_Gyro Gyro;
 	GyroHandler GyroHandle = new GyroHandler();
+	AnalogInput LettuceAssimilator = new AnalogInput(0);
 	ControlMode mode;
+	Autonomous auto;//
+	long autoStartTime;//
+	long timeInAuto;//
 
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code
@@ -49,14 +55,15 @@ public class Robot extends IterativeRobot {
 			rightMotor = new TalonSRX(26);
 		}
 		else if(whichRobot == RobotChoice.BOB) {
-			leftMotor = new TalonSRX(1);
-			rightMotor = new TalonSRX(2);
+			leftMotor = new TalonSRX(2);
+			rightMotor = new TalonSRX(1);
 		}
 
 		leftJoystick = new Joystick(0);
 		rightJoystick = new Joystick(1);
 		Gyro = new ADXRS450_Gyro();
 		mode = ControlMode.PercentOutput;
+		auto = new Autonomous();
 		
 	}
 
@@ -73,6 +80,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
+		autoStartTime = System.currentTimeMillis();//
 		autoSelected = chooser.getSelected();
 		// autoSelected = SmartDashboard.getString("Auto Selector",
 		// defaultAuto);
@@ -86,6 +94,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		timeInAuto = System.currentTimeMillis() - autoStartTime;
 		SmartDashboard.putNumber("Gyro Data:", Gyro.getAngle());
 		switch (autoSelected) {
 		case customAuto:
@@ -93,7 +102,8 @@ public class Robot extends IterativeRobot {
 			break;
 		case defaultAuto:
 		default:
-			// Put default auto code here
+			System.out.println("auto.leftLeft about to begin");
+			auto.leftLeft(leftMotor, rightMotor, timeInAuto, Gyro);
 		break;
 		}
 		
@@ -107,6 +117,10 @@ public class Robot extends IterativeRobot {
 		//utilities.angleDifference(Gyro.getAngle(), 40);
 		driveTrain(leftJoystick, rightJoystick);
 		SmartDashboard.putNumber("Gyro Data", Gyro.getAngle());
+		SmartDashboard.putNumber("LettuceAssimilator value:", (LettuceAssimilator.getVoltage() - 0.065) * 8.5034);
+		
+		// 0in reading: 0.0647
+		//?? 2.388
 	}
 
 	/**
@@ -119,8 +133,8 @@ public class Robot extends IterativeRobot {
 
 
 	public void driveTrain(Joystick leftJoystick, Joystick rightJoystick) {
-		leftMotor.set(ControlMode.PercentOutput, 0.6 *JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick)));
-		rightMotor.set(ControlMode.PercentOutput, 0.6 * -1 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+		leftMotor.set(ControlMode.PercentOutput, -0.4 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
+		rightMotor.set(ControlMode.PercentOutput, 0.4 * 0.9 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
 	}
 
 }

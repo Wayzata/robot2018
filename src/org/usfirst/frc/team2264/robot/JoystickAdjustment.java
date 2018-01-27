@@ -19,7 +19,7 @@ public class JoystickAdjustment {
 		}
 	}
 	
-	static double getLeft(Joystick leftJoystick) {
+	static double getLeft(Joystick leftJoystick, Joystick rightJoystick) {
 		
 		SmartDashboard.putNumber("Lef;t Joystick: ", leftJoystick.getY(GenericHID.Hand.kLeft));
 		return leftJoystick.getY(GenericHID.Hand.kLeft);
