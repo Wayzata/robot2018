@@ -24,11 +24,13 @@ public class Robot extends IterativeRobot {
 	double gyroInitial;
 	double gyroTrack;
 	boolean gyroPluggedIn;
-	RobotChoice whichRobot = RobotChoice.BOB;
+	RobotChoice whichRobot = RobotChoice.MARS;
 	String autoSelected;
 	SendableChooser<String> chooser = new SendableChooser<>();
-	TalonSRX leftMotor;
-	TalonSRX rightMotor;
+	TalonSRX left;
+	TalonSRX right;
+	TalonSRX leftFront;
+	TalonSRX rightFront;
 	Joystick leftJoystick; 
 	Joystick rightJoystick;
 	ADXRS450_Gyro Gyro;
@@ -49,22 +51,24 @@ public class Robot extends IterativeRobot {
 		chooser.addDefault("Default Auto", defaultAuto);
 		chooser.addObject("My Auto", customAuto);
 		SmartDashboard.putData("Auto choices", chooser);
-		leftMotor = new TalonSRX(4);
-		rightMotor = new TalonSRX(3);
+		//left = new TalonSRX(4);
+		//right = new TalonSRX(3);
 
-		/*if(whichRobot == RobotChoice.VERONICA) {
-			leftMotor = new TalonSRX(25);
-			rightMotor = new TalonSRX(26);
+		if(whichRobot == RobotChoice.VERONICA) {
+			left = new TalonSRX(25);
+			right = new TalonSRX(26);
 		}
 		else if(whichRobot == RobotChoice.BOB) {
-			leftMotor = new TalonSRX(2);
-			rightMotor = new TalonSRX(1);
+			left = new TalonSRX(2);
+			right = new TalonSRX(1);
 		}
 		else if(whichRobot == RobotChoice.MARS) {
-			leftMotor = new TalonSRX(4);
-			rightMotor = new TalonSRX(3);
+			left = new TalonSRX(6);
+			right = new TalonSRX(5);
+			leftFront = new TalonSRX(4);
+			rightFront = new TalonSRX(3);
 		}
-*/
+
 		leftJoystick = new Joystick(0);
 		rightJoystick = new Joystick(1);
 		Gyro = new ADXRS450_Gyro();
@@ -109,7 +113,7 @@ public class Robot extends IterativeRobot {
 		case defaultAuto:
 		default:
 			System.out.println("auto.leftLeft about to begin");
-			auto.leftLeft(leftMotor, rightMotor, timeInAuto, Gyro);
+			auto.leftLeft(left, right, timeInAuto, Gyro);
 		break;
 		}
 		
@@ -121,7 +125,13 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void teleopPeriodic() {
 		//utilities.angleDifference(Gyro.getAngle(), 40);
-		driveTrain(leftJoystick, rightJoystick);
+		
+		if(whichRobot == RobotChoice.MARS) {
+			driveTrainFour(leftJoystick, rightJoystick);
+		}
+		else {
+			driveTrainTwo(leftJoystick, rightJoystick);
+		}
 		SmartDashboard.putNumber("Gyro Data", Gyro.getAngle());
 		SmartDashboard.putNumber("LettuceAssimilator value:", (LettuceAssimilator.getVoltage() - 0.065) * 8.5034);
 		
@@ -134,13 +144,20 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
-		driveTrain(leftJoystick, rightJoystick);
 	}
 
 
-	public void driveTrain(Joystick leftJoystick, Joystick rightJoystick) {
-		leftMotor.set(ControlMode.PercentOutput, -0.4 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
-		rightMotor.set(ControlMode.PercentOutput, 0.4 * 0.9 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+	public void driveTrainTwo(Joystick leftJoystick, Joystick rightJoystick) {
+		left.set(ControlMode.PercentOutput, -0.4 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
+		right.set(ControlMode.PercentOutput, 0.4 * 0.9 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+	}
+	
+	public void driveTrainFour(Joystick leftJoystick, Joystick rightJoystick) {
+		left.set(ControlMode.PercentOutput, -1 * 0.3 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
+		leftFront.set(ControlMode.PercentOutput, -1 * 0.3 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getLeft(leftJoystick, rightJoystick)));
+		right.set(ControlMode.PercentOutput, 0.3 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+		rightFront.set(ControlMode.PercentOutput, 0.3 * JoystickAdjustment.sensitivityAdjustment(JoystickAdjustment.getRight(rightJoystick)));
+		
 	}
 
 }
