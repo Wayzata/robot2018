@@ -93,35 +93,16 @@ public class Robot extends IterativeRobot {
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
 	}
-<<<<<<< HEAD
-	
-	public void teleopPeriodic(){
-		
-		// Method that will be constantly called during Teleop
-		
-		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
-	
-		if(Variables.whichRobot == RobotChoice.MARS) {
-			
-		DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
-		
-		}
-		
-		else {
-			DriveTrain.MotorSetTwo(leftJ, rightJ, backLeft, backRight);
-		}
-		
-		checkButtons();
-	}
-	
-	public void autoPeriodic() {
-=======
+
+
+	@Override
+	public void autonomousPeriodic() {
+
 
 	/**
 	 * This function is called periodically during autonomous
 	 */
-	@Override
-	public void autonomousPeriodic() {
+	
 		timeInAuto=System.currentTimeMillis()- autoStartTime;
 		switch (autoSelected) {
 		case leftAuto:
@@ -146,7 +127,6 @@ public class Robot extends IterativeRobot {
 			//side=1;
 		//	auto.sideChoice(left, right, side);
 		case driveAuto:
->>>>>>> a43dabf43431dd31c31b4163a59460515d32bd22
 			
 			auto.crossLineAuto();
 		default:
@@ -155,6 +135,8 @@ public class Robot extends IterativeRobot {
 		}
 		
 	}
+	
+
 	
 	void checkButtons() {
 		if(controller.getAButtonPressed()) {
