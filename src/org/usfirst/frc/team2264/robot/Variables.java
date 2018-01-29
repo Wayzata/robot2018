@@ -13,9 +13,16 @@ public class Variables {
 	public static final int frontRN = 3;
 	public static int backLN = 6;
 	public static int backRN = 5;
+<<<<<<< HEAD
 	public static final double intakeSpeed = .5; ///SET THIS NUMBER///
 	public static final double conveyorSpeed = .5; //SET THIS NUMBER///
 	public static final double shooterSpeed = .5; //SET THIS NUMBER///
+=======
+	public static final double intakeSpeed = .5; //SET THIS NUMBER
+	public static final double conveyorSpeed = .5; //SET THIS NUMBER
+	public static final double shooterSpeed = .5; //SET THIS NUMBER
+	
+>>>>>>> a43dabf43431dd31c31b4163a59460515d32bd22
 	
 	
 	// Joysticks
@@ -43,5 +50,22 @@ public class Variables {
 		} 
 	}
 
+
+
+	public Variables() {
+		if(whichRobot == RobotChoice.MARS) {
+			backLN = 6;
+			backRN = 5;
+		}
+		else if(whichRobot == RobotChoice.VERONICA) {
+			backLN = 1;
+			backRN = 2;
+		}
+		else {
+			backLN = 25;
+			backRN = 26;
+		} 
+	}
+	
 }
 
