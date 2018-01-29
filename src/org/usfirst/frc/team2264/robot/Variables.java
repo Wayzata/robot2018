@@ -11,23 +11,13 @@ public class Variables {
 	
 	public static final int frontLN = 4;
 	public static final int frontRN = 3;
-	public static final int backLN = 6;
-	public static final int backRN = 5;
+	public static int backLN = 6;
+	public static int backRN = 5;
 	public static final double intakeSpeed = .5; //SET THIS NUMBER
 	public static final double conveyorSpeed = .5; //SET THIS NUMBER
 	public static final double shooterSpeed = .5; //SET THIS NUMBER
-/*	if(whichRobot == RobotChoice.MARS) {
-		backLN = 6;
-		backRN = 5;
-	}
-	else if(whichRobot = RobotChoice.VERONICA) {
-		backLN = 1;
-		backRN = 2;
-	}
-	else {
-		backLN = 25;
-		backRN = 26;
-	} */
+	
+	
 	
 	// Joysticks
 	public static final int rightStickPort = 1;
@@ -39,5 +29,22 @@ public class Variables {
 	// 2 moving
 	// 2 grabbing
 
+
+
+	public Variables() {
+		if(whichRobot == RobotChoice.MARS) {
+			backLN = 6;
+			backRN = 5;
+		}
+		else if(whichRobot == RobotChoice.VERONICA) {
+			backLN = 1;
+			backRN = 2;
+		}
+		else {
+			backLN = 25;
+			backRN = 26;
+		} 
+	}
+	
 }
 

@@ -232,5 +232,8 @@ public class Autos {
 		
 		return false;
 	}
+	public void crossLineAuto(){
+		
+	}
 
 }
