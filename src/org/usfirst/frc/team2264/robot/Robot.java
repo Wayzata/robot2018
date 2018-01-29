@@ -10,7 +10,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-// Master Code
 
 // @Authors
 /* Drake, Lexi, Rafael, Cameron, Nathan, Julian, Preeti */
@@ -76,14 +75,16 @@ public class Robot extends IterativeRobot {
 		gyroPluggedIn = Util.gyroCheck(Gyro);
 	}
 	
-	public void robotPeriodic() {
+	public void teleopPeriodic(){
 		
 		// Method that will be constantly called during Teleop
 		
 		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
 	
 		if(Variables.whichRobot == RobotChoice.MARS) {
+			
 		DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
+		
 		}
 		
 		else {
