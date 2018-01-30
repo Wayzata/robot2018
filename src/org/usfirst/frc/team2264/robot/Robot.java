@@ -1,4 +1,5 @@
 package org.usfirst.frc.team2264.robot;
+
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -23,11 +24,11 @@ public class Robot extends IterativeRobot {
 	//autonomous+ smart dashboard
 	final String driveAuto = "drive straight";
 	final String centerAuto = "Center Auto";
-	final String leftAuto= "Left Auto";
-	final String rightAuto= "Right Auto";
-	final String noAuto= "no Auto";
+	final String leftAuto = "Left Auto";
+	final String rightAuto = "Right Auto";
+	final String noAuto = "no Auto";
 	String autoSelected;
-	String gameData= DriverStation.getInstance().getGameSpecificMessage();
+	String gameData = DriverStation.getInstance().getGameSpecificMessage();
 	long autoStartTime;
 	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -55,6 +56,7 @@ public class Robot extends IterativeRobot {
 	double gyroInitial;
 	double gyroTrack;
 	boolean gyroPluggedIn;
+	
 	
 	Shooter shootyBoi = new Shooter();
 	Intake grabbyBoi = new Intake();
@@ -93,30 +95,7 @@ public class Robot extends IterativeRobot {
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
 	}
-<<<<<<< HEAD
 	
-	public void teleopPeriodic(){
-		
-		// Method that will be constantly called during Teleop
-		
-		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
-	
-		if(Variables.whichRobot == RobotChoice.MARS) {
-			
-		DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
-		
-		}
-		
-		else {
-			DriveTrain.MotorSetTwo(leftJ, rightJ, backLeft, backRight);
-		}
-		
-		checkButtons();
-	}
-	
-	public void autoPeriodic() {
-=======
-
 	/**
 	 * This function is called periodically during autonomous
 	 */
@@ -146,7 +125,6 @@ public class Robot extends IterativeRobot {
 			//side=1;
 		//	auto.sideChoice(left, right, side);
 		case driveAuto:
->>>>>>> a43dabf43431dd31c31b4163a59460515d32bd22
 			
 			auto.crossLineAuto();
 		default:
@@ -156,7 +134,9 @@ public class Robot extends IterativeRobot {
 		
 	}
 	
+	
 	void checkButtons() {
+		
 		if(controller.getAButtonPressed()) {
 			shootyBoi.startShooter(shooterLeft, shooterRight);
 		}

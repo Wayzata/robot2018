@@ -16,5 +16,5 @@ public class Intake {
 		left.set(ControlMode.PercentOutput, 0);
 		right.set(ControlMode.PercentOutput, 0);
 	}
-
+  
 }
