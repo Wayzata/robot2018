@@ -1,7 +1,6 @@
 
 *.class
 
-*.properties
-
-*.xml
+build
 /bin/
+dist
