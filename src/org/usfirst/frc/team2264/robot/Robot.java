@@ -1,10 +1,10 @@
 package org.usfirst.frc.team2264.robot;
-
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -24,11 +24,11 @@ public class Robot extends IterativeRobot {
 	//autonomous+ smart dashboard
 	final String driveAuto = "drive straight";
 	final String centerAuto = "Center Auto";
-	final String leftAuto = "Left Auto";
-	final String rightAuto = "Right Auto";
-	final String noAuto = "no Auto";
+	final String leftAuto= "Left Auto";
+	final String rightAuto= "Right Auto";
+	final String noAuto= "no Auto";
 	String autoSelected;
-	String gameData = DriverStation.getInstance().getGameSpecificMessage();
+	String gameData= DriverStation.getInstance().getGameSpecificMessage();
 	long autoStartTime;
 	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
@@ -50,8 +50,10 @@ public class Robot extends IterativeRobot {
 	TalonSRX conveyorRight;
 	TalonSRX shooterLeft;
 	TalonSRX shooterRight;
-	TalonSRX liftMotor;
+	TalonSRX liftMotor = new TalonSRX(Variables.liftElevator);
 	
+	//CameraServer
+	CameraServer connor = CameraServer.getInstance();
 	
 	//Gyro
 	ADXRS450_Gyro Gyro;
@@ -59,12 +61,10 @@ public class Robot extends IterativeRobot {
 	double gyroTrack;
 	boolean gyroPluggedIn;
 	
-	
 	Shooter shooter = new Shooter();
 	Intake intake = new Intake();
 	Conveyor conveyor = new Conveyor();
 	Elevator elevator = new Elevator();
-	
 	
 	public void robotInit() {
 		
@@ -81,12 +81,14 @@ public class Robot extends IterativeRobot {
 		frontRight = new TalonSRX(Variables.frontRN);
 		backLeft = new TalonSRX(Variables.backLN);
 		backRight = new TalonSRX(Variables.backRN);
-		liftMotor = new TalonSRX(Variables.liftElevator);
 	
 		// Joysticks
 		leftJ = new Joystick(Variables.leftStickPort);
 		rightJ = new Joystick(Variables.rightStickPort);
 		controller = new XboxController(Variables.controllerPort);
+		
+		//Start the camera server
+	connor.startAutomaticCapture();
 		
 		// Gyro
 		Gyro = new ADXRS450_Gyro();
@@ -100,12 +102,16 @@ public class Robot extends IterativeRobot {
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
 	}
-	
+
+
+	@Override
+	public void autonomousPeriodic() {
+
+
 	/**
 	 * This function is called periodically during autonomous
 	 */
-	@Override
-	public void autonomousPeriodic() {
+	
 		timeInAuto=System.currentTimeMillis()- autoStartTime;
 		switch (autoSelected) {
 		case leftAuto:
@@ -139,9 +145,9 @@ public class Robot extends IterativeRobot {
 		
 	}
 	
+
 	
 	void checkButtons() {
-		
 		if(controller.getBumperPressed(GenericHID.Hand.kLeft))
 		{
 			shooter.startShooter(shooterLeft, shooterRight);
@@ -169,8 +175,8 @@ public class Robot extends IterativeRobot {
 		{
 			elevator.downElevator(liftMotor);
 		}
-		}
-	
+		
+	}
 	
 
 
@@ -187,6 +193,7 @@ public class Robot extends IterativeRobot {
 		if(Variables.whichRobot == RobotChoice.MARS) {
 		DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
 		}
+		
 		else {
 			DriveTrain.MotorSetTwo(leftJ, rightJ, backLeft, backRight);
 		}

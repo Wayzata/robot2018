@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Conveyor {
-	//holding spot for cube, push the cube to the shooter
+	
 	public void startConveyor(TalonSRX left, TalonSRX right) {
 		left.set(ControlMode.PercentOutput, Variables.conveyorSpeed);
 		right.set(ControlMode.PercentOutput, Variables.conveyorSpeed);
