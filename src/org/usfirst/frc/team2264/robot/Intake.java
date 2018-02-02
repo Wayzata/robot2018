@@ -6,7 +6,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Intake {
-	
+	//intake of the cube for floor pickup
 	public void startIntake(TalonSRX left, TalonSRX right) {
 		left.set(ControlMode.PercentOutput, Variables.intakeSpeed);
 		right.set(ControlMode.PercentOutput, Variables.intakeSpeed);

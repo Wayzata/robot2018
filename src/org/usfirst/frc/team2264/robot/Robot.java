@@ -50,6 +50,8 @@ public class Robot extends IterativeRobot {
 	TalonSRX conveyorRight;
 	TalonSRX shooterLeft;
 	TalonSRX shooterRight;
+	TalonSRX liftMotor;
+	
 	
 	//Gyro
 	ADXRS450_Gyro Gyro;
@@ -58,9 +60,11 @@ public class Robot extends IterativeRobot {
 	boolean gyroPluggedIn;
 	
 	
-	Shooter shootyBoi = new Shooter();
-	Intake grabbyBoi = new Intake();
-	Conveyor movyBoi = new Conveyor();
+	Shooter shooter = new Shooter();
+	Intake intake = new Intake();
+	Conveyor conveyor = new Conveyor();
+	Elevator elevator = new Elevator();
+	
 	
 	public void robotInit() {
 		
@@ -77,6 +81,7 @@ public class Robot extends IterativeRobot {
 		frontRight = new TalonSRX(Variables.frontRN);
 		backLeft = new TalonSRX(Variables.backLN);
 		backRight = new TalonSRX(Variables.backRN);
+		liftMotor = new TalonSRX(Variables.liftElevator);
 	
 		// Joysticks
 		leftJ = new Joystick(Variables.leftStickPort);
@@ -137,25 +142,35 @@ public class Robot extends IterativeRobot {
 	
 	void checkButtons() {
 		
+		if(controller.getBumperPressed(GenericHID.Hand.kLeft))
+		{
+			shooter.startShooter(shooterLeft, shooterRight);
+		}
+		//if(controller.getBButtonPressed()) {
+		//	shootyBoi.stopShooter(shooterLeft, shooterRight);
+		//}
 		if(controller.getAButtonPressed()) {
-			shootyBoi.startShooter(shooterLeft, shooterRight);
-		}
-		if(controller.getBButtonPressed()) {
-			shootyBoi.stopShooter(shooterLeft, shooterRight);
-		}
-		if(controller.getXButtonPressed()) {
-			grabbyBoi.startIntake(intakeLeft, intakeRight);
+			intake.startIntake(intakeLeft, intakeRight);
 		}
 		if(controller.getYButtonPressed()) {
-			grabbyBoi.stopIntake(intakeLeft, intakeRight);
-		}
-		if(controller.getBumperPressed(GenericHID.Hand.kLeft)) {
-			movyBoi.startConveyor(conveyorLeft, conveyorRight);
+			intake.stopIntake(intakeLeft, intakeRight);
 		}
 		if(controller.getBumperPressed(GenericHID.Hand.kRight)) {
-			movyBoi.stopConveyor(conveyorLeft, conveyorRight);
+			conveyor.startConveyor(conveyorLeft, conveyorRight);
 		}
-	}
+		//if(controller.getBumperPressed(GenericHID.Hand.kRight)) {
+		//	movyBoi.stopConveyor(conveyorLeft, conveyorRight);
+		//}
+		if(controller.getXButtonPressed())
+		{	elevator.upElevator(liftMotor);
+			
+		}
+		if(controller.getBButtonPressed())
+		{
+			elevator.downElevator(liftMotor);
+		}
+		}
+	
 	
 
 
