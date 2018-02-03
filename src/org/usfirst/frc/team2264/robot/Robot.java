@@ -68,14 +68,15 @@ public class Robot extends IterativeRobot {
 	double gyroTrack;
 	boolean gyroPluggedIn;
 	
-	Shooter shooter = new Shooter();
-	Intake intake = new Intake();
-	Conveyor conveyor = new Conveyor();
-	Elevator elevator = new Elevator();
-	Compressor compressor = new Compressor(2);
-	DoubleSolenoid solenoid = new DoubleSolenoid(0, 1);
+	Shooter shooter;
+	Intake intake;
+	Conveyor conveyor;
+	Elevator elevator;
+	Compressor compressor;
+	DoubleSolenoid solenoid;
 	
 	public void robotInit() {
+		
 		
 		// Method that will run only one time in Teleop
 		//smart dashboard
@@ -99,6 +100,29 @@ public class Robot extends IterativeRobot {
 		leftJ = new Joystick(Variables.leftStickPort);
 		rightJ = new Joystick(Variables.rightStickPort);
 		controller = new XboxController(Variables.controllerPort);
+		
+		shooter = new Shooter();
+		intake = new Intake();
+		conveyor = new Conveyor();
+		elevator = new Elevator();
+		compressor = new Compressor(1);
+		solenoid = new DoubleSolenoid(1, 0, 1);
+		
+		compressor.setClosedLoopControl(true);
+		solenoid.set(DoubleSolenoid.Value.kOff);
+		solenoid.set(DoubleSolenoid.Value.kReverse);
+		
+		//Solenoid testSol = new Solenoid(1);
+		//testSol.set(on);
+		
+		int readVal = solenoid.getAll();
+		SmartDashboard.putNumber("getAll", readVal);
+		readVal = solenoid.getPCMSolenoidBlackList();
+		SmartDashboard.putNumber("getPCM", readVal);
+		boolean boolVal = solenoid.getPCMSolenoidVoltageFault();
+		SmartDashboard.putBoolean("getPCMSolenoidVoltageFault", boolVal);
+		boolVal = solenoid.getPCMSolenoidVoltageStickyFault();
+		SmartDashboard.putBoolean("getPCMSolenoidVoltageStickyFault", boolVal);
 		
 		//Start the camera server
 	//connor.startAutomaticCapture();
@@ -199,9 +223,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		compressor.setClosedLoopControl(true);
+		//compressor.setClosedLoopControl(true);
 		//solenoid.set(DoubleSolenoid.Value.kForward);
-	//	solenoid.clearAllPCMStickyFaults();
 		
 		// Method that will be constantly called during Teleop
 		checkButtons();
