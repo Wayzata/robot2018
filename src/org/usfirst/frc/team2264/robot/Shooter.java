@@ -7,9 +7,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 public class Shooter {
 	//wheels that shoot the cube out
-	public void startShooter(TalonSRX left, TalonSRX right) {
-		left.set(ControlMode.PercentOutput, Variables.shooterSpeed);
-		right.set(ControlMode.PercentOutput, Variables.shooterSpeed);
+	public void startShooter(TalonSRX left, TalonSRX right, double speed) {
+		left.set(ControlMode.PercentOutput, speed);
+		right.set(ControlMode.PercentOutput, speed);
 	}
 	
 	public void stopShooter(TalonSRX left, TalonSRX right) {

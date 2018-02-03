@@ -1,6 +1,8 @@
 package org.usfirst.frc.team2264.robot;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
+import java.awt.Color;
+
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Sendable;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.SolenoidBase;
 import edu.wpi.first.wpilibj.XboxController;
@@ -39,7 +42,7 @@ public class Robot extends IterativeRobot {
 	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	Autos auto;
-	
+	double shootingSpeed;
 	//Joysticks
 	Joystick leftJ;
 	Joystick rightJ;
@@ -71,9 +74,12 @@ public class Robot extends IterativeRobot {
 	Shooter shooter;
 	Intake intake;
 	Conveyor conveyor;
-	Elevator elevator;
-	Compressor compressor;
-	DoubleSolenoid solenoid;
+	//Elevator elevator;
+	//Compressor compressor;
+//	DoubleSolenoid solenoid;
+	//pneumatics
+	Pneumatic pneumatics= new Pneumatic();
+	
 	
 	public void robotInit() {
 		
@@ -104,17 +110,16 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		intake = new Intake();
 		conveyor = new Conveyor();
-		elevator = new Elevator();
-		compressor = new Compressor(1);
-		solenoid = new DoubleSolenoid(1, 0, 1);
+		//elevator = new Elevator();
+		//compressor = new Compressor(1);
+		//solenoid = new DoubleSolenoid(1, 0, 1);
 		
-		compressor.setClosedLoopControl(true);
-		solenoid.set(DoubleSolenoid.Value.kOff);
-		solenoid.set(DoubleSolenoid.Value.kReverse);
+		//compressor.setClosedLoopControl(true);
+		
 		
 		//Solenoid testSol = new Solenoid(1);
 		//testSol.set(on);
-		
+	/*	
 		int readVal = solenoid.getAll();
 		SmartDashboard.putNumber("getAll", readVal);
 		readVal = solenoid.getPCMSolenoidBlackList();
@@ -123,7 +128,7 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putBoolean("getPCMSolenoidVoltageFault", boolVal);
 		boolVal = solenoid.getPCMSolenoidVoltageStickyFault();
 		SmartDashboard.putBoolean("getPCMSolenoidVoltageStickyFault", boolVal);
-		
+	 */		
 		//Start the camera server
 	//connor.startAutomaticCapture();
 		
@@ -138,7 +143,7 @@ public class Robot extends IterativeRobot {
 		this.autoStartTime = System.currentTimeMillis();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
-		compressor.setClosedLoopControl(true);
+	//	compressor.setClosedLoopControl(true);
 	}
 
 
@@ -186,37 +191,68 @@ public class Robot extends IterativeRobot {
 
 	
 	void checkButtons() {
+		//shooter controls
 		if(controller.getBumperPressed(GenericHID.Hand.kLeft))
 		{
-			shooter.startShooter(shooterLeft, shooterRight);
+			shooter.startShooter(shooterLeft, shooterRight,shootingSpeed);
 		}
-		//if(controller.getBButtonPressed()) {
-		//	shootyBoi.stopShooter(shooterLeft, shooterRight);
-		//}
-		if(controller.getAButtonPressed()) {
-			intake.startIntake(intakeLeft, intakeRight);
-		}
-		if(controller.getYButtonPressed()) {
-			intake.stopIntake(intakeLeft, intakeRight);
-		}
+		//intake control
+		
 		if(controller.getBumperPressed(GenericHID.Hand.kRight)) {
 			conveyor.startConveyor(conveyorLeft, conveyorRight);
 		}
-		//if(controller.getBumperPressed(GenericHID.Hand.kRight)) {
-		//	movyBoi.stopConveyor(conveyorLeft, conveyorRight);
-		//}
-		if(controller.getXButtonPressed())
-		{	elevator.upElevator(liftMotor);
-			
+		if(controller.getAButton()) {
+			pneumatics.extendArms();
+			System.out.println("fdergerg");
 		}
-		if(controller.getBButtonPressed())
-		{
-			elevator.downElevator(liftMotor);
+		if(controller.getYButton()) {
+			pneumatics.retractArms();
+		}
+		if(controller.getBackButton()) {
+			shootingSpeed=Variables.switchShooterSpeed;
+		}
+		if(controller.getStartButton()) {
+			shootingSpeed=Variables.scaleShooterSpeed;	
 		}
 		
 	}
+	void checkIntakeControls() {
+		if(leftJ.getRawButton(3)) {
+			intake.doubleIntake(intakeLeft,	intakeRight);
+		}
+		if(leftJ.getRawButton(2)) {
+			intake.doubleOutput(intakeLeft, intakeRight);
+		}
+		if(rightJ.getRawButton(3)) {
+			intake.turn(intakeLeft, intakeRight);
+		}
+		if(rightJ.getRawButton(2)) {
+			intake.stop(intakeLeft, intakeRight);
+}
+		
+		
+	}
 	
-
+	void elevatorControls() {
+		if (controller.getTriggerAxis(GenericHID.Hand.kLeft)>.1) {
+		//if(leftJ.getRawButton(6)) {
+			pneumatics.raiseShooter();
+		}
+		else if (controller.getTriggerAxis(GenericHID.Hand.kRight)>.1) {
+		//if(leftJ.getRawButton(7)) {
+			pneumatics.lowerShooter();
+		}
+	
+	}
+	
+	void checkPressure() {
+		if(pneumatics.compressor.getPressureSwitchValue()) {
+		//	SmartDashboard.putData("Air Tank Full", (Sendable) Color.GREEN);
+		}
+		else {
+			//SmartDashboard.putData("Air Tank Full", (Sendable) Color.red);
+		}
+	}
 
 	/**
 	 * This function is called periodically during operator control
@@ -228,8 +264,10 @@ public class Robot extends IterativeRobot {
 		
 		// Method that will be constantly called during Teleop
 		checkButtons();
+		elevatorControls();
+		checkPressure();
 		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
-	
+		
 		if(Variables.whichRobot == RobotChoice.MARS) {
 		DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
 		}

@@ -14,9 +14,11 @@ public class Variables {
 	public static int backLN = 6;
 	public static int backRN = 5;
 
-	public static final double intakeSpeed = .5; ///SET THIS NUMBER///
+	public static final double intakeSpeed = -.5; ///SET THIS NUMBER///
 	public static final double conveyorSpeed = .5; //SET THIS NUMBER///
-	public static final double shooterSpeed = .5; //SET THIS NUMBER///
+	public static final double switchShooterSpeed = .5;//SET THIS NUMBER///
+	public static final double scaleShooterSpeed = .9;//SET THIS NUMBER///
+
 	
 	public static final int liftElevator = 7; //change this
 	public static final double elevateSpeed = 1; 
