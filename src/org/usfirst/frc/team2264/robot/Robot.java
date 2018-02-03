@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.IterativeRobot;
@@ -50,7 +51,7 @@ public class Robot extends IterativeRobot {
 	TalonSRX conveyorRight;
 	TalonSRX shooterLeft;
 	TalonSRX shooterRight;
-	TalonSRX liftMotor = new TalonSRX(Variables.liftElevator);
+	TalonSRX liftMotor;
 	
 	//CameraServer
 	CameraServer connor = CameraServer.getInstance();
@@ -65,6 +66,7 @@ public class Robot extends IterativeRobot {
 	Intake intake = new Intake();
 	Conveyor conveyor = new Conveyor();
 	Elevator elevator = new Elevator();
+	Compressor compressor = new Compressor(1);
 	
 	public void robotInit() {
 		
@@ -81,6 +83,7 @@ public class Robot extends IterativeRobot {
 		frontRight = new TalonSRX(Variables.frontRN);
 		backLeft = new TalonSRX(Variables.backLN);
 		backRight = new TalonSRX(Variables.backRN);
+		liftMotor = new TalonSRX(Variables.liftElevator);
 	
 		// Joysticks
 		leftJ = new Joystick(Variables.leftStickPort);
@@ -101,6 +104,7 @@ public class Robot extends IterativeRobot {
 		this.autoStartTime = System.currentTimeMillis();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
+		compressor.setClosedLoopControl(true);
 	}
 
 
