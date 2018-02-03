@@ -3,14 +3,19 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+
 import edu.wpi.first.wpilibj.ADXRS450_Gyro;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.Compressor;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.SolenoidBase;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.hal.SolenoidJNI;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -53,8 +58,9 @@ public class Robot extends IterativeRobot {
 	TalonSRX shooterRight;
 	TalonSRX liftMotor;
 	
+	
 	//CameraServer
-	CameraServer connor = CameraServer.getInstance();
+	//CameraServer connor = CameraServer.getInstance();
 	
 	//Gyro
 	ADXRS450_Gyro Gyro;
@@ -66,12 +72,16 @@ public class Robot extends IterativeRobot {
 	Intake intake = new Intake();
 	Conveyor conveyor = new Conveyor();
 	Elevator elevator = new Elevator();
-	Compressor compressor = new Compressor(1);
+	Compressor compressor = new Compressor(2);
+	DoubleSolenoid solenoid = new DoubleSolenoid(0, 1);
 	
 	public void robotInit() {
 		
 		// Method that will run only one time in Teleop
 		//smart dashboard
+		
+	//	compressor.setClosedLoopControl(true);
+		
 		chooser.addObject("Center Auto", centerAuto);
 		chooser.addObject("Left Auto", leftAuto);
 		chooser.addObject("Right Auto", rightAuto);
@@ -91,7 +101,7 @@ public class Robot extends IterativeRobot {
 		controller = new XboxController(Variables.controllerPort);
 		
 		//Start the camera server
-	connor.startAutomaticCapture();
+	//connor.startAutomaticCapture();
 		
 		// Gyro
 		Gyro = new ADXRS450_Gyro();
@@ -189,7 +199,10 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-
+		compressor.setClosedLoopControl(true);
+		//solenoid.set(DoubleSolenoid.Value.kForward);
+	//	solenoid.clearAllPCMStickyFaults();
+		
 		// Method that will be constantly called during Teleop
 		checkButtons();
 		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
@@ -208,6 +221,16 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void testPeriodic() {
+		
+		
+		//System.out.println(solenoid.getName());
+		
+		//System.out.println("Post: " + solenoid.get());
+		
+	//	System.out.println("Talon Numbers: " + frontLeft.getDeviceID() + ", " + frontRight.getDeviceID() + ", " + backLeft.getDeviceID() + ", " + backRight.getDeviceID());
+		
+		//SmartDashboard.putData("sol", solenoid.get());
+		
 	}
 
 }
