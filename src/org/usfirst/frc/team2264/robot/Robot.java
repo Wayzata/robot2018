@@ -62,8 +62,8 @@ public class Robot extends IterativeRobot {
 	TalonSRX liftMotor;
 	
 	
-	//CameraServer
-	//CameraServer connor = CameraServer.getInstance();
+
+	CameraServer connor = CameraServer.getInstance();
 	
 	//Gyro
 	ADXRS450_Gyro Gyro;
@@ -74,10 +74,6 @@ public class Robot extends IterativeRobot {
 	Shooter shooter;
 	Intake intake;
 	Conveyor conveyor;
-	//Elevator elevator;
-	//Compressor compressor;
-//	DoubleSolenoid solenoid;
-	//pneumatics
 	Pneumatic pneumatics= new Pneumatic();
 	
 	
@@ -85,9 +81,7 @@ public class Robot extends IterativeRobot {
 		
 		
 		// Method that will run only one time in Teleop
-		//smart dashboard
 		
-	//	compressor.setClosedLoopControl(true);
 		
 		chooser.addObject("Center Auto", centerAuto);
 		chooser.addObject("Left Auto", leftAuto);
@@ -110,27 +104,19 @@ public class Robot extends IterativeRobot {
 		shooter = new Shooter();
 		intake = new Intake();
 		conveyor = new Conveyor();
-		//elevator = new Elevator();
-		//compressor = new Compressor(1);
-		//solenoid = new DoubleSolenoid(1, 0, 1);
-		
-		//compressor.setClosedLoopControl(true);
-		
-		
-		//Solenoid testSol = new Solenoid(1);
-		//testSol.set(on);
+
 	/*	
 		int readVal = solenoid.getAll();
 		SmartDashboard.putNumber("getAll", readVal);
 		readVal = solenoid.getPCMSolenoidBlackList();
-		SmartDashboard.putNumber("getPCM", readVal);
+		SmartDashboard.putNumbenr("getPCM", readVal);
 		boolean boolVal = solenoid.getPCMSolenoidVoltageFault();
 		SmartDashboard.putBoolean("getPCMSolenoidVoltageFault", boolVal);
 		boolVal = solenoid.getPCMSolenoidVoltageStickyFault();
 		SmartDashboard.putBoolean("getPCMSolenoidVoltageStickyFault", boolVal);
 	 */		
 		//Start the camera server
-	//connor.startAutomaticCapture();
+		connor.startAutomaticCapture();
 		
 		// Gyro
 		Gyro = new ADXRS450_Gyro();
@@ -143,7 +129,6 @@ public class Robot extends IterativeRobot {
 		this.autoStartTime = System.currentTimeMillis();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
-	//	compressor.setClosedLoopControl(true);
 	}
 
 
