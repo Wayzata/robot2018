@@ -10,6 +10,7 @@ public class Util {
 	
 	// Util class that will contain the sensors or other smaller methods
 	
+	// Checks if the gyro sensor is plugged in
 	static boolean gyroCheck(ADXRS450_Gyro Gyro) {
 		
 		// Debugger for gyro

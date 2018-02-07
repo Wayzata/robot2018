@@ -31,18 +31,22 @@ public class Robot extends IterativeRobot {
 // Main class that will use other classes and call methods to run the robot
 	
 	//autonomous+ smart dashboard
+	
+	//Different autonomous programs
 	final String driveAuto = "drive straight";
 	final String centerAuto = "Center Auto";
 	final String leftAuto= "Left Auto";
 	final String rightAuto= "Right Auto";
 	final String noAuto= "no Auto";
+	
 	String autoSelected;
-	String gameData= DriverStation.getInstance().getGameSpecificMessage();
+	String gameData= DriverStation.getInstance().getGameSpecificMessage(); //Get the starting position of the robot
 	long autoStartTime;
 	long timeInAuto;
 	SendableChooser<String> chooser = new SendableChooser<>();
 	Autos auto;
-	double shootingSpeed;
+	double shootingSpeed; //Conner MCBOI
+	
 	//Joysticks
 	Joystick leftJ;
 	Joystick rightJ;
@@ -62,25 +66,32 @@ public class Robot extends IterativeRobot {
 	TalonSRX liftMotor;
 	
 	
-
+	// Instantiates the camera Instantiates the camera
 	CameraServer connor = CameraServer.getInstance();
 	
 	//Gyro
-	ADXRS450_Gyro Gyro;
+	ADXRS450_Gyro Gyro; 
 	double gyroInitial;
 	double gyroTrack;
 	boolean gyroPluggedIn;
 	
-	Shooter shooter;
+	//Shooter
+	Shooter shooter; 
+	
+	//Intake
 	Intake intake;
+	
+	//Conveyer
 	Conveyor conveyor;
-	Pneumatic pneumatics= new Pneumatic();
+	
+	//Pneumatics
+	Pneumatic pneumatics;
 	
 	
 	public void robotInit() {
 		
 		
-		// Method that will run only one time in Teleop
+		// Method that will run only one time in the Teleop
 		
 		
 		chooser.addObject("Center Auto", centerAuto);
@@ -101,9 +112,11 @@ public class Robot extends IterativeRobot {
 		rightJ = new Joystick(Variables.rightStickPort);
 		controller = new XboxController(Variables.controllerPort);
 		
+		//Attachments
 		shooter = new Shooter();
 		intake = new Intake();
 		conveyor = new Conveyor();
+		pneumatics = new Pneumatic();
 
 	/*	
 		int readVal = solenoid.getAll();
@@ -118,7 +131,7 @@ public class Robot extends IterativeRobot {
 		//Start the camera server
 		connor.startAutomaticCapture();
 		
-		// Gyro
+		//Gyro declaration
 		Gyro = new ADXRS450_Gyro();
 	}
 	
@@ -181,11 +194,13 @@ public class Robot extends IterativeRobot {
 		{
 			shooter.startShooter(shooterLeft, shooterRight,shootingSpeed);
 		}
-		//intake control
 		
+		//Conveyer control
 		if(controller.getBumperPressed(GenericHID.Hand.kRight)) {
 			conveyor.startConveyor(conveyorLeft, conveyorRight);
 		}
+		
+		//Pneumatics control
 		if(controller.getAButton()) {
 			pneumatics.extendArms();
 			System.out.println("fdergerg");
@@ -193,6 +208,8 @@ public class Robot extends IterativeRobot {
 		if(controller.getYButton()) {
 			pneumatics.retractArms();
 		}
+		
+		//Shooter control
 		if(controller.getBackButton()) {
 			shootingSpeed=Variables.switchShooterSpeed;
 		}
@@ -201,16 +218,21 @@ public class Robot extends IterativeRobot {
 		}
 		
 	}
+	
 	void checkIntakeControls() {
+		//pulls box inwards
 		if(leftJ.getRawButton(3)) {
 			intake.doubleIntake(intakeLeft,	intakeRight);
 		}
+		//pushes box outwards
 		if(leftJ.getRawButton(2)) {
 			intake.doubleOutput(intakeLeft, intakeRight);
 		}
+		//turns box
 		if(rightJ.getRawButton(3)) {
 			intake.turn(intakeLeft, intakeRight);
 		}
+		//stops motors
 		if(rightJ.getRawButton(2)) {
 			intake.stop(intakeLeft, intakeRight);
 }
@@ -219,13 +241,13 @@ public class Robot extends IterativeRobot {
 	}
 	
 	void elevatorControls() {
+		//raises shooter
 		if (controller.getTriggerAxis(GenericHID.Hand.kLeft)>.1) {
-		//if(leftJ.getRawButton(6)) {
-			pneumatics.raiseShooter();
+					pneumatics.raiseShooter();
 		}
+		//lowers shooter
 		else if (controller.getTriggerAxis(GenericHID.Hand.kRight)>.1) {
-		//if(leftJ.getRawButton(7)) {
-			pneumatics.lowerShooter();
+					pneumatics.lowerShooter();
 		}
 	
 	}
@@ -254,10 +276,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
 		
 		if(Variables.whichRobot == RobotChoice.MARS) {
-		DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
+			//Sets motors for robot with four-motor drive train
+			DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
 		}
 		
 		else {
+			//Sets motors for for robot with two-motor drive train
 			DriveTrain.MotorSetTwo(leftJ, rightJ, backLeft, backRight);
 		}
 	}
