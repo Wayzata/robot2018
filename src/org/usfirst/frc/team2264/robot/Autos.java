@@ -321,7 +321,7 @@ public class Autos {
 		
 		// Fires the box onto the switch
 		if(time < 2500){
-			shooter.startShooter(shooterLeft, shooterRight, Shooter.SWITCH_SPEED);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.switchShooterSpeed);
 			pneumatics.lowerShooter();
 		}
 		

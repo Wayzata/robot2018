@@ -4,7 +4,7 @@ package org.usfirst.frc.team2264.robot;
 /* Drake, Lexi, Rafael, Cameron, Nathan, Julian, Preeti */
 
 public class Variables {
-	public static RobotChoice whichRobot = RobotChoice.MARS;
+	public static RobotChoice whichRobot = RobotChoice.BOB;
 	// Variables class to change numbers and use them throughout the code
 	
 	// Motors
@@ -13,6 +13,10 @@ public class Variables {
 	public static final int frontRN = 3;
 	public static int backLN = 6;
 	public static int backRN = 5;
+	public static final int shooterLeft = 5;
+	public static final int shooterRight = 6;
+	public static final int conveyorLeft = 4;
+	public static final int conveyorRight = 3;
 
 	public static final double intakeSpeed = -.5; ///SET THIS NUMBER///
 	public static final double conveyorSpeed = .5; //SET THIS NUMBER///
