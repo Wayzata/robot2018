@@ -4,20 +4,24 @@ package org.usfirst.frc.team2264.robot;
 /* Drake, Lexi, Rafael, Cameron, Nathan, Julian, Preeti */
 
 public class Variables {
-	public static RobotChoice whichRobot = RobotChoice.MARS;
+	public static RobotChoice whichRobot = RobotChoice.BOB;
 	// Variables class to change numbers and use them throughout the code
 	
 	// Motors
 	
-	public static final int frontLN = 4; // Front-left talon number
-	public static final int frontRN = 3; // Front-right talon number
-	public static int backLN = 6; // Back-left talon number
-	public static int backRN = 5; // Back-right talons number
+	public static final int frontLN = 4;
+	public static final int frontRN = 3;
+	public static int backLN = 6;
+	public static int backRN = 5;
+	public static final int shooterLeft = 5;
+	public static final int shooterRight = 6;
+	public static final int conveyorLeft = 4;
+	public static final int conveyorRight = 3;
 
-	public static final double intakeSpeed = -.5; // Speed of the intake motors ///SET THIS NUMBER///  ///WE STILL NEED TO SET THESE NUMBERS DON'T FORGET TO DO THIS SERIOUSLY IF YOU FORGET IT WE WILL DIE///
-	public static final double conveyorSpeed = .5; // Speed of the conveyor motors //SET THIS NUMBER///
-	public static final double switchShooterSpeed = .5; // Speed of the shooter motors when shooting to the switch //SET THIS NUMBER///
-	public static final double scaleShooterSpeed = .9; // Speed of the shooter motors when shooting to the scale //SET THIS NUMBER///
+	public static final double intakeSpeed = -.5; ///SET THIS NUMBER///
+	public static final double conveyorSpeed = .5; //SET THIS NUMBER///
+	public static final double switchShooterSpeed = .5;//SET THIS NUMBER///
+	public static final double scaleShooterSpeed = .9;//SET THIS NUMBER///
 
 	
 	public static final int liftElevator = 7; //change this
@@ -37,8 +41,6 @@ public class Variables {
 	// 2 grabbing
 	
 	public Variables() {
-		
-		//Deterimines which robot is being used, and sets the talon numbers appropriatly
 		if(whichRobot == RobotChoice.MARS) {
 			backLN = 6;
 			backRN = 5;
@@ -54,4 +56,3 @@ public class Variables {
 	}
 	
 }
-

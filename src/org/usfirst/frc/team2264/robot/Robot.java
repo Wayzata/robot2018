@@ -31,8 +31,6 @@ public class Robot extends IterativeRobot {
 // Main class that will use other classes and call methods to run the robot
 	
 	//autonomous+ smart dashboard
-	
-	//Different autonomous programs
 	final String driveAuto = "drive straight";
 	final String centerAuto = "Center Auto";
 	final String leftAuto= "Left Auto";
@@ -40,12 +38,14 @@ public class Robot extends IterativeRobot {
 	final String noAuto= "no Auto";
 	
 	String autoSelected;
-	String gameData= DriverStation.getInstance().getGameSpecificMessage(); //Get the starting position of the robot
+	String gameData= DriverStation.getInstance().getGameSpecificMessage();
+	
 	long autoStartTime;
 	long timeInAuto;
+	
 	SendableChooser<String> chooser = new SendableChooser<>();
 	Autos auto;
-	double shootingSpeed; //Conner MCBOI
+	double shootingSpeed;
 	
 	//Joysticks
 	Joystick leftJ;
@@ -65,34 +65,25 @@ public class Robot extends IterativeRobot {
 	TalonSRX shooterRight;
 	TalonSRX liftMotor;
 	
-	
-	// Instantiates the camera Instantiates the camera
-	CameraServer connor = CameraServer.getInstance();
+	//CameraServer
+	CameraServer camera = CameraServer.getInstance();
 	
 	//Gyro
-	ADXRS450_Gyro Gyro; 
+	ADXRS450_Gyro Gyro;
 	double gyroInitial;
 	double gyroTrack;
 	boolean gyroPluggedIn;
 	
-	//Shooter
-	Shooter shooter; 
-	
-	//Intake
+	Shooter shooter;
 	Intake intake;
-	
-	//Conveyer
 	Conveyor conveyor;
-	
-	//Pneumatics
 	Pneumatic pneumatics;
 	
 	
 	public void robotInit() {
 		
-		
-		// Method that will run only one time in the Teleop
-		
+		// Method that will run only one time in Teleop
+		//smart dashboard
 		
 		chooser.addObject("Center Auto", centerAuto);
 		chooser.addObject("Left Auto", leftAuto);
@@ -100,42 +91,51 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Drive straight", driveAuto);
 		chooser.addDefault("no auto", noAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		
 		// Motors
 		frontLeft = new TalonSRX(Variables.frontLN);
 		frontRight = new TalonSRX(Variables.frontRN);
 		backLeft = new TalonSRX(Variables.backLN);
 		backRight = new TalonSRX(Variables.backRN);
 		liftMotor = new TalonSRX(Variables.liftElevator);
+		shooterLeft = new TalonSRX(Variables.shooterLeft);
+		shooterRight = new TalonSRX(Variables.shooterRight);
+		conveyorLeft = new TalonSRX(Variables.conveyorLeft);
+		conveyorRight = new TalonSRX(Variables.conveyorRight);
 	
 		// Joysticks
 		leftJ = new Joystick(Variables.leftStickPort);
 		rightJ = new Joystick(Variables.rightStickPort);
 		controller = new XboxController(Variables.controllerPort);
 		
-		//Attachments
 		shooter = new Shooter();
 		intake = new Intake();
 		conveyor = new Conveyor();
 		pneumatics = new Pneumatic();
-
+		
+		// Gyro
+		Gyro = new ADXRS450_Gyro();
+		
+		//Solenoid testSol = new Solenoid(1);
+		//testSol.set(on);
 	/*	
 		int readVal = solenoid.getAll();
 		SmartDashboard.putNumber("getAll", readVal);
 		readVal = solenoid.getPCMSolenoidBlackList();
-		SmartDashboard.putNumbenr("getPCM", readVal);
+		SmartDashboard.putNumber("getPCM", readVal);
 		boolean boolVal = solenoid.getPCMSolenoidVoltageFault();
 		SmartDashboard.putBoolean("getPCMSolenoidVoltageFault", boolVal);
 		boolVal = solenoid.getPCMSolenoidVoltageStickyFault();
 		SmartDashboard.putBoolean("getPCMSolenoidVoltageStickyFault", boolVal);
 	 */		
 		//Start the camera server
-		connor.startAutomaticCapture();
+		camera.startAutomaticCapture();
 		
-		//Gyro declaration
-		Gyro = new ADXRS450_Gyro();
+
 	}
 	
 	public void autonomousInit() {
+		
 		// Method that will run only one time in autonomous
 		Gyro.calibrate();
 		gyroPluggedIn = Util.gyroCheck(Gyro);
@@ -157,36 +157,33 @@ public class Robot extends IterativeRobot {
 		switch (autoSelected) {
 		case leftAuto:
 			if(auto.getSwitch(gameData, 0)){
-			auto.leftLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto);
+				auto.leftLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
 			else{
-				auto.leftRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto);
+				auto.leftRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
 			break;
 		case rightAuto:
 			if(auto.getSwitch(gameData, 1)){
-			auto.rightRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto);
+				auto.rightRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
 			else{
-				auto.rightLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto);
+				auto.rightLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
 		case centerAuto:
-			//auto.center(left, right);
+			if(auto.getSwitch(gameData, 0)){
+				auto.centerLeft(frontLeft, frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
+			}
+			else{
+				auto.centerRight(frontLeft, frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
+			}
 			break;
-		//case straightSwitch:
-			//side=1;
-		//	auto.sideChoice(left, right, side);
-		case driveAuto:
-			
-			auto.crossLineAuto();
 		default:
 			auto.stop(frontLeft,frontRight, backLeft, backRight);
 			break;
 		}
 		
 	}
-	
-
 	
 	void checkButtons() {
 		//shooter controls
@@ -195,61 +192,46 @@ public class Robot extends IterativeRobot {
 			shooter.startShooter(shooterLeft, shooterRight,shootingSpeed);
 		}
 		
-		//Conveyer control
+		//intake control
 		if(controller.getBumperPressed(GenericHID.Hand.kRight)) {
 			conveyor.startConveyor(conveyorLeft, conveyorRight);
 		}
-		
-		//Pneumatics control
 		if(controller.getAButton()) {
 			pneumatics.extendArms();
-			System.out.println("fdergerg");
 		}
 		if(controller.getYButton()) {
 			pneumatics.retractArms();
 		}
-		
-		//Shooter control
 		if(controller.getBackButton()) {
 			shootingSpeed=Variables.switchShooterSpeed;
 		}
 		if(controller.getStartButton()) {
 			shootingSpeed=Variables.scaleShooterSpeed;	
 		}
-		
 	}
 	
 	void checkIntakeControls() {
-		//pulls box inwards
 		if(leftJ.getRawButton(3)) {
 			intake.doubleIntake(intakeLeft,	intakeRight);
 		}
-		//pushes box outwards
 		if(leftJ.getRawButton(2)) {
 			intake.doubleOutput(intakeLeft, intakeRight);
 		}
-		//turns box
 		if(rightJ.getRawButton(3)) {
 			intake.turn(intakeLeft, intakeRight);
 		}
-		//stops motors
 		if(rightJ.getRawButton(2)) {
 			intake.stop(intakeLeft, intakeRight);
-}
-		
-		
+		}	
 	}
 	
 	void elevatorControls() {
-		//raises shooter
 		if (controller.getTriggerAxis(GenericHID.Hand.kLeft)>.1) {
-					pneumatics.raiseShooter();
+			pneumatics.raiseShooter();
 		}
-		//lowers shooter
 		else if (controller.getTriggerAxis(GenericHID.Hand.kRight)>.1) {
-					pneumatics.lowerShooter();
+			pneumatics.lowerShooter();
 		}
-	
 	}
 	
 	void checkPressure() {
@@ -266,9 +248,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		//compressor.setClosedLoopControl(true);
-		//solenoid.set(DoubleSolenoid.Value.kForward);
-		
 		// Method that will be constantly called during Teleop
 		checkButtons();
 		elevatorControls();
@@ -276,12 +255,10 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
 		
 		if(Variables.whichRobot == RobotChoice.MARS) {
-			//Sets motors for robot with four-motor drive train
 			DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
 		}
 		
 		else {
-			//Sets motors for for robot with two-motor drive train
 			DriveTrain.MotorSetTwo(leftJ, rightJ, backLeft, backRight);
 		}
 	}
@@ -292,16 +269,6 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void testPeriodic() {
 		
-		
-		//System.out.println(solenoid.getName());
-		
-		//System.out.println("Post: " + solenoid.get());
-		
-	//	System.out.println("Talon Numbers: " + frontLeft.getDeviceID() + ", " + frontRight.getDeviceID() + ", " + backLeft.getDeviceID() + ", " + backRight.getDeviceID());
-		
-		//SmartDashboard.putData("sol", solenoid.get());
-		
 	}
 
 }
-
