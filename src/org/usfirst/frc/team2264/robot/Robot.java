@@ -27,25 +27,25 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /* Drake, Lexi, Rafael, Cameron, Nathan, Julian, Preeti */
 
 public class Robot extends IterativeRobot {
+//all directions are in respect to the drivers perspective from the drivers station .
 	
 // Main class that will use other classes and call methods to run the robot
 	
 	//autonomous+ smart dashboard
-	final String driveAuto = "drive straight";
 	final String centerAuto = "Center Auto";
 	final String leftAuto= "Left Auto";
 	final String rightAuto= "Right Auto";
-	final String noAuto= "no Auto";
 	
 	String autoSelected;
 	String gameData= DriverStation.getInstance().getGameSpecificMessage();
+	//String gameData = "LRR";
 	
 	long autoStartTime;
 	long timeInAuto;
 	
 	SendableChooser<String> chooser = new SendableChooser<>();
 	Autos auto;
-	double shootingSpeed;
+	double shootingSpeed = Variables.switchShooterSpeed;
 	
 	//Joysticks
 	Joystick leftJ;
@@ -66,10 +66,12 @@ public class Robot extends IterativeRobot {
 	TalonSRX liftMotor;
 	
 	//CameraServer
-	CameraServer camera = CameraServer.getInstance();
+	CameraServer intakeCamera;
+	CameraServer shooterCamera;
 	
 	//Gyro
 	ADXRS450_Gyro Gyro;
+
 	double gyroInitial;
 	double gyroTrack;
 	boolean gyroPluggedIn;
@@ -78,19 +80,10 @@ public class Robot extends IterativeRobot {
 	Intake intake;
 	Conveyor conveyor;
 	Pneumatic pneumatics;
-	
-	
+
 	public void robotInit() {
 		
-		// Method that will run only one time in Teleop
-		//smart dashboard
-		
-		chooser.addObject("Center Auto", centerAuto);
-		chooser.addObject("Left Auto", leftAuto);
-		chooser.addObject("Right Auto", rightAuto);
-		chooser.addObject("Drive straight", driveAuto);
-		chooser.addDefault("no auto", noAuto);
-		SmartDashboard.putData("Auto choices", chooser);
+		//Method that will run once on start-up
 		
 		// Motors
 		frontLeft = new TalonSRX(Variables.frontLN);
@@ -102,6 +95,8 @@ public class Robot extends IterativeRobot {
 		shooterRight = new TalonSRX(Variables.shooterRight);
 		conveyorLeft = new TalonSRX(Variables.conveyorLeft);
 		conveyorRight = new TalonSRX(Variables.conveyorRight);
+		intakeLeft = new TalonSRX(Variables.intakeLeft);
+		intakeRight= new TalonSRX(Variables.intakeRight);
 	
 		// Joysticks
 		leftJ = new Joystick(Variables.leftStickPort);
@@ -115,6 +110,10 @@ public class Robot extends IterativeRobot {
 		
 		// Gyro
 		Gyro = new ADXRS450_Gyro();
+		gyroPluggedIn = Util.gyroCheck(Gyro);
+		
+		auto = new Autos();
+		
 		
 		//Solenoid testSol = new Solenoid(1);
 		//testSol.set(on);
@@ -128,18 +127,26 @@ public class Robot extends IterativeRobot {
 		boolVal = solenoid.getPCMSolenoidVoltageStickyFault();
 		SmartDashboard.putBoolean("getPCMSolenoidVoltageStickyFault", boolVal);
 	 */		
-		//Start the camera server
-		camera.startAutomaticCapture();
 		
+		intakeCamera = CameraServer.getInstance();
+		shooterCamera = CameraServer.getInstance();
+		intakeCamera.startAutomaticCapture(1);
+		shooterCamera.startAutomaticCapture();
 
+		//smart dashboard
+
+		//chooser.addObject("Center Auto", centerAuto);
+		//chooser.addObject("Left Auto", leftAuto);
+		//chooser.addObject("Right Auto", rightAuto);
+		//SmartDashboard.putData("Auto choices", chooser);
+		DashBoard();
 	}
 	
 	public void autonomousInit() {
 		
 		// Method that will run only one time in autonomous
 		Gyro.calibrate();
-		gyroPluggedIn = Util.gyroCheck(Gyro);
-		this.autoStartTime = System.currentTimeMillis();
+		autoStartTime = System.currentTimeMillis();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);
 	}
@@ -147,13 +154,14 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void autonomousPeriodic() {
-
-
 	/**
 	 * This function is called periodically during autonomous
 	 */
-	
-		timeInAuto=System.currentTimeMillis()- autoStartTime;
+		
+		//smartdashboard
+		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
+		
+		timeInAuto=System.currentTimeMillis() - autoStartTime;
 		switch (autoSelected) {
 		case leftAuto:
 			if(auto.getSwitch(gameData, 0)){
@@ -179,23 +187,36 @@ public class Robot extends IterativeRobot {
 			}
 			break;
 		default:
-			auto.stop(frontLeft,frontRight, backLeft, backRight);
+			auto.stop(frontLeft, frontRight, backLeft, backRight);
 			break;
 		}
-		
 	}
 	
 	void checkButtons() {
+		
 		//shooter controls
-		if(controller.getBumperPressed(GenericHID.Hand.kLeft))
+		if(controller.getBButton())
 		{
-			shooter.startShooter(shooterLeft, shooterRight,shootingSpeed);
+			//System.out.println("Shooterstart");
+			
+			shooter.startShooter(shooterLeft, shooterRight, shootingSpeed);
+			
+		}
+		else {
+			shooter.startShooter(shooterLeft, shooterRight, 0);
 		}
 		
 		//intake control
-		if(controller.getBumperPressed(GenericHID.Hand.kRight)) {
+		if(controller.getXButton()) {
 			conveyor.startConveyor(conveyorLeft, conveyorRight);
 		}
+		else if(controller.getStartButton()) {
+			conveyor.reverseConveyor(conveyorLeft, conveyorRight);
+		}
+		else{
+			conveyor.stopConveyor(conveyorLeft, conveyorRight);
+		}
+		
 		if(controller.getAButton()) {
 			pneumatics.extendArms();
 		}
@@ -205,24 +226,25 @@ public class Robot extends IterativeRobot {
 		if(controller.getBackButton()) {
 			shootingSpeed=Variables.switchShooterSpeed;
 		}
-		if(controller.getStartButton()) {
-			shootingSpeed=Variables.scaleShooterSpeed;	
-		}
+		
+		
+		
 	}
 	
 	void checkIntakeControls() {
-		if(leftJ.getRawButton(3)) {
+		if(leftJ.getRawButton(1)) {//3
 			intake.doubleIntake(intakeLeft,	intakeRight);
 		}
-		if(leftJ.getRawButton(2)) {
+		else if(leftJ.getRawButton(2)){
 			intake.doubleOutput(intakeLeft, intakeRight);
 		}
-		if(rightJ.getRawButton(3)) {
+	
+		else if(rightJ.getRawButton(2)) {
 			intake.turn(intakeLeft, intakeRight);
 		}
-		if(rightJ.getRawButton(2)) {
+		else{
 			intake.stop(intakeLeft, intakeRight);
-		}	
+		}
 	}
 	
 	void elevatorControls() {
@@ -242,6 +264,19 @@ public class Robot extends IterativeRobot {
 			//SmartDashboard.putData("Air Tank Full", (Sendable) Color.red);
 		}
 	}
+	
+	void DashBoard() {
+		
+		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
+		SmartDashboard.putNumber("Left Joystick: ", leftJ.getY(GenericHID.Hand.kLeft));
+		SmartDashboard.putNumber("Right Joystick: ", rightJ.getY(GenericHID.Hand.kRight));
+		SmartDashboard.putBoolean("Arms OUT: ", pneumatics.armsOut);
+		
+		chooser.addObject("Center Auto", centerAuto);
+		chooser.addObject("Left Auto", leftAuto);
+		chooser.addObject("Right Auto", rightAuto);
+		SmartDashboard.putData("Auto choices", chooser);
+	}
 
 	/**
 	 * This function is called periodically during operator control
@@ -250,17 +285,12 @@ public class Robot extends IterativeRobot {
 	public void teleopPeriodic() {
 		// Method that will be constantly called during Teleop
 		checkButtons();
+		checkIntakeControls();
 		elevatorControls();
 		checkPressure();
-		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
+		DashBoard();
 		
-		if(Variables.whichRobot == RobotChoice.MARS) {
-			DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
-		}
-		
-		else {
-			DriveTrain.MotorSetTwo(leftJ, rightJ, backLeft, backRight);
-		}
+		DriveTrain.MotorSet(leftJ, rightJ, frontLeft, frontRight, backLeft, backRight);
 	}
 
 	/**

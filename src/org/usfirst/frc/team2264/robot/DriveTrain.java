@@ -18,30 +18,19 @@ public class DriveTrain {
 			
 		// Method to set the motors to the joystick readings
 		
-		frontL.set(ControlMode.PercentOutput, -0.4 * sensitivityAdjustment(getLeft(leftJ)));
-		backL.set(ControlMode.PercentOutput, -0.4 * sensitivityAdjustment(getLeft(leftJ)));
+		frontL.set(ControlMode.PercentOutput, -0.6 * sensitivityAdjustment(getLeft(leftJ)));
+		backL.set(ControlMode.PercentOutput, -0.6 * sensitivityAdjustment(getLeft(leftJ)));
 		
-		frontR.set(ControlMode.PercentOutput, 0.4 * sensitivityAdjustment(getRight(rightJ)));
-		backR.set(ControlMode.PercentOutput, 0.4 * sensitivityAdjustment(getLeft(rightJ)));
-		
-	}
-	
-	public static void MotorSetTwo(Joystick leftJ, Joystick rightJ, TalonSRX backL, TalonSRX backR) {
-
-			// Method to set the motors to the joystick readings
-
-		
-		backL.set(ControlMode.PercentOutput, -0.4 * sensitivityAdjustment(getLeft(leftJ)));
-		backR.set(ControlMode.PercentOutput, 0.4 * sensitivityAdjustment(getLeft(rightJ)));
+		frontR.set(ControlMode.PercentOutput, 0.6 * sensitivityAdjustment(getRight(rightJ)));
+		backR.set(ControlMode.PercentOutput, 0.6 * sensitivityAdjustment(getRight(rightJ)));
 		
 	}
-	
 	
 	public static double getLeft(Joystick leftJ) {
 	
 		// Method to get the left joystick reading
 		
-		SmartDashboard.putNumber("LeftJoystick", leftJ.getY(GenericHID.Hand.kLeft));
+		SmartDashboard.putNumber("Left Joystick: ", leftJ.getY(GenericHID.Hand.kLeft));
 		return leftJ.getY(GenericHID.Hand.kLeft);
 		
 	}
@@ -50,7 +39,7 @@ public class DriveTrain {
 		
 		// Method to get the right joystick reading
 		
-		SmartDashboard.putNumber("RightJoystick", rightJ.getY(GenericHID.Hand.kRight));
+		SmartDashboard.putNumber("Right Joystick: ", rightJ.getY(GenericHID.Hand.kRight));
 		return rightJ.getY(GenericHID.Hand.kRight);
 	
 	}

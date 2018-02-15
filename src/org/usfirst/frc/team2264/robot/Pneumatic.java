@@ -2,18 +2,19 @@ package org.usfirst.frc.team2264.robot;
 
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class Pneumatic {
 	Compressor compressor;
 	DoubleSolenoid shooterSolenoid;
-	DoubleSolenoid leftArmSolenoid;
-	DoubleSolenoid rightArmSolenoid;
+	DoubleSolenoid armsSolenoid;
+	
+	boolean armsOut = false;
 	
 	public Pneumatic() {
 		compressor = new Compressor(1);
+		armsSolenoid = new DoubleSolenoid(1, 2, 3);
 		shooterSolenoid = new DoubleSolenoid(1, 0, 1);
-		leftArmSolenoid = new DoubleSolenoid(1, 4, 5);
-		rightArmSolenoid = new DoubleSolenoid(1, 6, 7);
 		
 		compressor.setClosedLoopControl(true);
 	}
@@ -27,12 +28,12 @@ public class Pneumatic {
 	}
 	
 	public void extendArms() {
-		leftArmSolenoid.set(DoubleSolenoid.Value.kForward);
-		rightArmSolenoid.set(DoubleSolenoid.Value.kForward);
+		armsOut = true;
+		armsSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 	
 	public void retractArms() {
-		leftArmSolenoid.set(DoubleSolenoid.Value.kReverse);
-		rightArmSolenoid.set(DoubleSolenoid.Value.kReverse);
+		armsOut = false;
+		armsSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 }

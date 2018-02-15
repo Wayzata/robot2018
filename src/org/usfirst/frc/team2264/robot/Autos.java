@@ -21,7 +21,13 @@ public class Autos {
 	
 	final static long CENTER_STOP_1 = 2000;
 	final static long CENTER_STOP_2 = 6000;
-	final static long CENTER_STOP_3 = 10000; 
+	final static long CENTER_STOP_3 = 10000;
+	
+	final static int RIGHT_DRIFT_ADJUSTMENT = -15;
+	final static int LEFT_DRIFT_ADJUSTMENT = 15;
+	
+	final static double LEFT_MOTOR_ADJUSTMENT = .6;
+	final static double RIGHT_MOTOR_ADJUSTMENT = .6;
 	
 	final static int RIGHT = 0;
 	final static int LEFT = 1;
@@ -40,16 +46,16 @@ public class Autos {
 			driveForward(frontL, frontR, backL, backR, gyro, 0);
 		}
 		
-		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() > -75) {
-			turn(frontL, frontR, backL, backR, LEFT);
+		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() < (90 + RIGHT_DRIFT_ADJUSTMENT)) {
+			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
-		else if(gyro.getAngle() <= -75 && time < SAME_SIDE_STOP_2) {
-			driveBackward(frontL, frontR, backL, backR, gyro, -90);
+		else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < SAME_SIDE_STOP_2) {
+			driveForward(frontL, frontR, backL, backR, gyro, 90);
 		}
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time);
+			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
 		}
 		
 	}
@@ -61,25 +67,25 @@ public class Autos {
 			driveForward(frontL, frontR, backL, backR, gyro, 0);
 		}
 		
-		else if(time >= OPP_SIDE_STOP_1 && gyro.getAngle() < 75) {
+		else if(time >= OPP_SIDE_STOP_1 && gyro.getAngle() < (90 + RIGHT_DRIFT_ADJUSTMENT)) {
 			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
-		else if(gyro.getAngle() >= 75 && time < OPP_SIDE_STOP_2) {
+		else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_2) {
 			driveForward(frontL, frontR, backL, backR, gyro, 90);
 		}
 		
-		else if(time >= OPP_SIDE_STOP_2 && gyro.getAngle() > 0) {
-			turn(frontL, frontR, backL, backR, LEFT);
+		else if(time >= OPP_SIDE_STOP_2 && gyro.getAngle() < (180 + RIGHT_DRIFT_ADJUSTMENT)) {
+			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
-		else if(gyro.getAngle() <= 0 && time < OPP_SIDE_STOP_3) {
-			driveBackward(frontL, frontR, backL, backR, gyro, 0);
+		else if(gyro.getAngle() >= (180 + RIGHT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_3) {
+			driveForward(frontL, frontR, backL, backR, gyro, 180);
 		}
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time);
+			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.oppAutoShooterSpeed);
 		}
 	}
 	
@@ -93,16 +99,15 @@ public class Autos {
 			driveForward(frontL, frontR, backL, backR, gyro, 0);
 		}
 		
-		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() < 75) {
-			turn(frontL, frontR, backL, backR, RIGHT);
+		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
+			turn(frontL, frontR, backL, backR, LEFT);
 		}
-		
-		else if(gyro.getAngle() >= 75 && time < SAME_SIDE_STOP_2) {
-			driveBackward(frontL, frontR, backL, backR, gyro, 90);
+		else if(gyro.getAngle() <= (-90 + LEFT_DRIFT_ADJUSTMENT) && time < SAME_SIDE_STOP_2) {
+			driveForward(frontL, frontR, backL, backR, gyro, -90);
 		}
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time);
+			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
 		}
 	
 	}
@@ -114,25 +119,25 @@ public class Autos {
 			driveForward(frontL, frontR, backL, backR, gyro, 0);
 		}
 		
-		else if(time >= OPP_SIDE_STOP_1 && gyro.getAngle() > -75) {
+		else if(time >= OPP_SIDE_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
 			turn(frontL, frontR, backL, backR, LEFT);
 		}
 		
-		else if(gyro.getAngle() <= -75 && time < OPP_SIDE_STOP_2) {
+		else if(gyro.getAngle() <= (-90 + LEFT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_2) {
 			driveForward(frontL, frontR, backL, backR, gyro, -90);
 		}
 		
-		else if(time >= OPP_SIDE_STOP_2 && gyro.getAngle() < 0) {
-			turn(frontL, frontR, backL, backR, RIGHT);
+		else if(time >= OPP_SIDE_STOP_2 && gyro.getAngle() > (-180 + LEFT_DRIFT_ADJUSTMENT)) {
+			turn(frontL, frontR, backL, backR, LEFT);
 		}
 		
-		else if(gyro.getAngle() >= 0 && time < OPP_SIDE_STOP_3) {
-			driveBackward(frontL, frontR, backL, backR, gyro, 0);
+		else if(gyro.getAngle() <= (-180 + LEFT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_3) {
+			driveForward(frontL, frontR, backL, backR, gyro, -180);
 		}
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time);
+			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.oppAutoShooterSpeed);
 		}
 		
 	}
@@ -147,54 +152,55 @@ public class Autos {
 			driveForward(frontL, frontR, backL, backR, gyro, 0);
 		}
 		
-		else if(time >= CENTER_STOP_1 && gyro.getAngle() > -75) {
+		else if(time >= CENTER_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
 			turn(frontL, frontR, backL, backR, LEFT);
 		}
 		
-		else if(gyro.getAngle() <= -75 && time < CENTER_STOP_2) {
-			driveForward(frontL, frontR, backL, backR, gyro, 0);
+		else if(gyro.getAngle() <= (90 + LEFT_DRIFT_ADJUSTMENT) && time < CENTER_STOP_2) {
+			driveForward(frontL, frontR, backL, backR, gyro, -90);
 		}
 		
-		else if(time >= CENTER_STOP_2 && gyro.getAngle() > -165) {
-			turn(frontL, frontR, backL, backR, LEFT);
+		else if(time >= CENTER_STOP_2 && gyro.getAngle() < (0 + RIGHT_DRIFT_ADJUSTMENT)) {
+			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
-		else if(gyro.getAngle() <= -165 && time < CENTER_STOP_3) {
-			driveBackward(frontL, frontR, backL, backR, gyro, -165);
+		else if(gyro.getAngle() >= (0 + RIGHT_DRIFT_ADJUSTMENT) && time < CENTER_STOP_3) {
+			driveBackward(frontL, frontR, backL, backR, gyro, 0);
 		}
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time);
+			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
 		}
 	}
 	
 	public void centerRight(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, long time,
-							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, Conveyor conveyor, Pneumatic pneumatics) {
+							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, 
+							Shooter shooter, Conveyor conveyor, Pneumatic pneumatics) {
 		
 		if (time < CENTER_STOP_1) {
 			driveForward(frontL, frontR, backL, backR, gyro, 0);
 		}
 		
-		else if(time >= CENTER_STOP_1 && gyro.getAngle() < 75) {
+		else if(time >= CENTER_STOP_1 && gyro.getAngle() < (90 + RIGHT_DRIFT_ADJUSTMENT)) {
 			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
-		else if(gyro.getAngle() >= 75 && time < CENTER_STOP_2) {
+		else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < CENTER_STOP_2) {
+			driveForward(frontL, frontR, backL, backR, gyro, 90);
+		}
+		
+		else if(time >= CENTER_STOP_2 && gyro.getAngle() > (0 + LEFT_DRIFT_ADJUSTMENT)) {
+			turn(frontL, frontR, backL, backR, LEFT);
+		}
+		
+		else if(gyro.getAngle() <= (0 + LEFT_DRIFT_ADJUSTMENT) && time < CENTER_STOP_3) {
 			driveForward(frontL, frontR, backL, backR, gyro, 0);
-		}
-		
-		else if(time >= CENTER_STOP_2 && gyro.getAngle() < 165) {
-			turn(frontL, frontR, backL, backR, RIGHT);
-		}
-		
-		else if(gyro.getAngle() >= 165 && time < CENTER_STOP_3) {
-			driveBackward(frontL, frontR, backL, backR, gyro, 180);
 		}
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time);
+			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
 		}
 		
 	}
@@ -206,11 +212,11 @@ public class Autos {
 		
 		// Method to drive forward without using bearings
 		
-		frontL.set(ControlMode.PercentOutput, -1 * motorPer);
-		backL.set(ControlMode.PercentOutput, -1 * motorPer);
+		frontL.set(ControlMode.PercentOutput, 1 * motorPer * LEFT_MOTOR_ADJUSTMENT);
+		backL.set(ControlMode.PercentOutput, 1 * motorPer * LEFT_MOTOR_ADJUSTMENT);//ADD MOTOR ADJUSTMENT TO ALL OTHER METHODS!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
-		frontR.set(ControlMode.PercentOutput, 1 * motorPer);
-		backR.set(ControlMode.PercentOutput, 1 * motorPer);
+		frontR.set(ControlMode.PercentOutput, -1 * motorPer * RIGHT_MOTOR_ADJUSTMENT);
+		backR.set(ControlMode.PercentOutput, -1 * motorPer * RIGHT_MOTOR_ADJUSTMENT);
 		
 	}
 	
@@ -223,19 +229,19 @@ public class Autos {
 		}
 		
 		else if(gyro.getAngle() < bearing) {
-			frontL.set(ControlMode.PercentOutput, -1 * motorPer);
-			backL.set(ControlMode.PercentOutput, -1 * motorPer);
+			frontL.set(ControlMode.PercentOutput, 1 * motorPer * LEFT_MOTOR_ADJUSTMENT);
+			backL.set(ControlMode.PercentOutput, 1 * motorPer * LEFT_MOTOR_ADJUSTMENT);
 			
-			frontR.set(ControlMode.PercentOutput, .9 * motorPer);
-			backR.set(ControlMode.PercentOutput, .9 * motorPer);
+			frontR.set(ControlMode.PercentOutput, -.9 * motorPer * RIGHT_MOTOR_ADJUSTMENT);
+			backR.set(ControlMode.PercentOutput, -.9 * motorPer * RIGHT_MOTOR_ADJUSTMENT);
 		}
 		
 		else if (gyro.getAngle() > bearing) {
-			frontL.set(ControlMode.PercentOutput, -.9 * motorPer);
-			backL.set(ControlMode.PercentOutput, -.9 * motorPer);
+			frontL.set(ControlMode.PercentOutput, .9 * motorPer * LEFT_MOTOR_ADJUSTMENT);
+			backL.set(ControlMode.PercentOutput, .9 * motorPer * LEFT_MOTOR_ADJUSTMENT);
 			
-			frontR.set(ControlMode.PercentOutput, 1 * motorPer);
-			backR.set(ControlMode.PercentOutput, 1 * motorPer);
+			frontR.set(ControlMode.PercentOutput, -1 * motorPer * RIGHT_MOTOR_ADJUSTMENT);
+			backR.set(ControlMode.PercentOutput, -1 * motorPer * RIGHT_MOTOR_ADJUSTMENT);
 		}
 	}
 	
@@ -248,21 +254,21 @@ public class Autos {
 		// Turns Right
 		case 0:
 		
-			frontL.set(ControlMode.PercentOutput, -1 * turnPer);
-			backL.set(ControlMode.PercentOutput, -1 * turnPer);
+			frontL.set(ControlMode.PercentOutput, 1 * turnPer * LEFT_MOTOR_ADJUSTMENT);
+			backL.set(ControlMode.PercentOutput, 1 * turnPer * LEFT_MOTOR_ADJUSTMENT);
 			
-			frontR.set(ControlMode.PercentOutput, -1 * turnPer);
-			backR.set(ControlMode.PercentOutput, -1 * turnPer);
+			frontR.set(ControlMode.PercentOutput, 1 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
+			backR.set(ControlMode.PercentOutput, 1 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
 		break;
 		
 		// Turn Left
 		case 1:
 			
-			frontL.set(ControlMode.PercentOutput, 1 * turnPer);
-			backL.set(ControlMode.PercentOutput, 1 * turnPer);
+			frontL.set(ControlMode.PercentOutput, -1 * turnPer * LEFT_MOTOR_ADJUSTMENT);
+			backL.set(ControlMode.PercentOutput, -1 * turnPer * LEFT_MOTOR_ADJUSTMENT);
 			
-			frontR.set(ControlMode.PercentOutput, 1 * turnPer);
-			backR.set(ControlMode.PercentOutput, 1 * turnPer);
+			frontR.set(ControlMode.PercentOutput, -1 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
+			backR.set(ControlMode.PercentOutput, -1 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
 		break;
 		
 		default:
@@ -273,11 +279,11 @@ public class Autos {
 	
 	public void driveBackward(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR) {
 		
-		frontL.set(ControlMode.PercentOutput, 1 * turnPer);
-		backL.set(ControlMode.PercentOutput, 1 * turnPer);
+		frontL.set(ControlMode.PercentOutput, -1 * turnPer * LEFT_MOTOR_ADJUSTMENT);
+		backL.set(ControlMode.PercentOutput, -1 * turnPer * LEFT_MOTOR_ADJUSTMENT);
 		
-		frontR.set(ControlMode.PercentOutput, -1 * turnPer);
-		backR.set(ControlMode.PercentOutput, -1 * turnPer);
+		frontR.set(ControlMode.PercentOutput, 1 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
+		backR.set(ControlMode.PercentOutput, 1 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
 	}
 	
 	public void driveBackward(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, int bearing) {
@@ -287,19 +293,19 @@ public class Autos {
 		}
 		
 		else if (gyro.getAngle() - bearing > 0) {
-			frontL.set(ControlMode.PercentOutput, 1 * turnPer);
-			backL.set(ControlMode.PercentOutput, 1 * turnPer);
+			frontL.set(ControlMode.PercentOutput, -1 * turnPer * LEFT_MOTOR_ADJUSTMENT);
+			backL.set(ControlMode.PercentOutput, -1 * turnPer * LEFT_MOTOR_ADJUSTMENT);
 			
-			frontR.set(ControlMode.PercentOutput, -.9 * turnPer);
-			backR.set(ControlMode.PercentOutput, -.9 * turnPer);
+			frontR.set(ControlMode.PercentOutput, .9 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
+			backR.set(ControlMode.PercentOutput, .9 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
 		}
 		
 		else if (gyro.getAngle() - bearing < 0) {
-			frontL.set(ControlMode.PercentOutput, .9 * turnPer);
-			backL.set(ControlMode.PercentOutput, .9 * turnPer);
+			frontL.set(ControlMode.PercentOutput, -.9 * turnPer * LEFT_MOTOR_ADJUSTMENT);
+			backL.set(ControlMode.PercentOutput, -.9 * turnPer * LEFT_MOTOR_ADJUSTMENT);
 			
-			frontR.set(ControlMode.PercentOutput, -1 * turnPer);
-			backR.set(ControlMode.PercentOutput, -1 * turnPer);
+			frontR.set(ControlMode.PercentOutput, 1 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
+			backR.set(ControlMode.PercentOutput, 1 * turnPer * RIGHT_MOTOR_ADJUSTMENT);
 		}
 	}
 	
@@ -317,11 +323,12 @@ public class Autos {
 // Shoot
 /* -------------------------- */
 	
-	public void shoot(TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, Conveyor conveyor, Pneumatic pneumatics, long time){
+	public void shoot(TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, 
+						Shooter shooter, Conveyor conveyor, Pneumatic pneumatics, long time, double speed){
 		
 		// Fires the box onto the switch
 		if(time < 2500){
-			shooter.startShooter(shooterLeft, shooterRight, Variables.switchShooterSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, speed);
 			pneumatics.lowerShooter();
 		}
 		
@@ -330,7 +337,7 @@ public class Autos {
 		}
 		
 		else {
-			shooter.stopShooter(shooterLeft, conveyorRight);
+			//shooter.stopShooter(shooterLeft, conveyorRight);
 			conveyor.stopConveyor(conveyorLeft, conveyorRight);
 		}
 	}

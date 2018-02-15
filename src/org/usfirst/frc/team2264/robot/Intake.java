@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 public class Intake {
 	//intake of the cube for floor pickup
 	public void doubleIntake(TalonSRX left, TalonSRX right) {
-		left.set(ControlMode.PercentOutput, Variables.intakeSpeed);
+		left.set(ControlMode.PercentOutput, -Variables.intakeSpeed);
 		right.set(ControlMode.PercentOutput, Variables.intakeSpeed);
 	}
 	
@@ -17,11 +17,11 @@ public class Intake {
 		right.set(ControlMode.PercentOutput, 0);
 	}
 	public void doubleOutput(TalonSRX left, TalonSRX right) {
-		left.set(ControlMode.PercentOutput, -Variables.intakeSpeed);
+		left.set(ControlMode.PercentOutput, Variables.intakeSpeed);
 		right.set(ControlMode.PercentOutput, -Variables.intakeSpeed);
 	}
 	public void turn(TalonSRX left, TalonSRX right) {
-		left.set(ControlMode.PercentOutput, Variables.intakeSpeed);
-		right.set(ControlMode.PercentOutput, -Variables.intakeSpeed);	}
+		left.set(ControlMode.PercentOutput, -Variables.intakeSpeed);
+		right.set(ControlMode.PercentOutput, Variables.intakeSpeed);	}
   
 }

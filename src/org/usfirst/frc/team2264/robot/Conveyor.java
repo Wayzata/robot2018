@@ -16,5 +16,11 @@ public class Conveyor {
 		left.set(ControlMode.PercentOutput, 0);
 		right.set(ControlMode.PercentOutput, 0);
 	}
+	
+	public void reverseConveyor(TalonSRX left, TalonSRX right){
+		left.set(ControlMode.PercentOutput, Variables.conveyorSpeed * -1);
+		right.set(ControlMode.PercentOutput, Variables.conveyorSpeed * -1);
+		
+	}
 
 }

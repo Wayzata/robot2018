@@ -15,8 +15,7 @@ public class Util {
 		// Debugger for gyro
 		
 		double gyroInitial = Gyro.getAngle();
-		double gyroTrack = 0;
-		
+		double gyroTrack = 1;
 		for(int i = 0; i < 5; i++) {
 			
 			gyroTrack = gyroTrack + Gyro.getAngle();
@@ -25,13 +24,13 @@ public class Util {
 		
 		if(gyroTrack == (5 * gyroInitial)){
 			
-			SmartDashboard.putString("Gyro is:", "NOT plugged in");
+			//SmartDashboard.putString("Gyro is:", "NOT plugged in");
 			return false;
 			
 		}
 		else {
 			
-			SmartDashboard.putString("Gyro is:", "plugged in");
+			//SmartDashboard.putString("Gyro is:", "plugged in");
 			return true;
 			
 		}
