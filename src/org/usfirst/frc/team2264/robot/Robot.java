@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 	final String centerAuto = "Center Auto";
 	final String leftAuto= "Left Auto";
 	final String rightAuto= "Right Auto";
+	final String noAuto="noAuto";
 	
 	String autoSelected;
 	String gameData= DriverStation.getInstance().getGameSpecificMessage();
@@ -275,6 +276,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Center Auto", centerAuto);
 		chooser.addObject("Left Auto", leftAuto);
 		chooser.addObject("Right Auto", rightAuto);
+		chooser.addDefault("No Auto", noAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 	}
 
