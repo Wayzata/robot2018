@@ -12,7 +12,7 @@ public class Autos {
 	
 	// Auto class that will contain the methods for each auto
 	
-	final static long SAME_SIDE_STOP_1 = 4550;
+	final static long SAME_SIDE_STOP_1 = 3100;
 	//final static long SAME_SIDE_STOP_2 = 9000;
 	
 	final static long OPP_SIDE_STOP_1 = 2000;
@@ -23,8 +23,8 @@ public class Autos {
 	final static long CENTER_STOP_2 = 6000;
 	final static long CENTER_STOP_3 = 10000;
 	
-	final static int RIGHT_DRIFT_ADJUSTMENT = -15;
-	final static int LEFT_DRIFT_ADJUSTMENT = 15;
+	final static int RIGHT_DRIFT_ADJUSTMENT = -10; //-15
+	final static int LEFT_DRIFT_ADJUSTMENT = 10; //15
 	
 	final static double LEFT_MOTOR_ADJUSTMENT = .8;
 	final static double RIGHT_MOTOR_ADJUSTMENT = .8;
@@ -55,7 +55,7 @@ public class Autos {
 		//}
 		else {
 			stop(frontL, frontR, backL, backR);
-			shooter.startShooter(shooterLeft, shooterRight, Variables.scaleShooterSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 		}
 		
 	}
@@ -85,7 +85,7 @@ public class Autos {
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.oppAutoShooterSpeed);
+			//shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.oppAutoShooterSpeed);
 		}
 	}
 	
@@ -102,12 +102,12 @@ public class Autos {
 		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
 			turn(frontL, frontR, backL, backR, LEFT);
 		}
-		else if(gyro.getAngle() <= (-90 + LEFT_DRIFT_ADJUSTMENT) && time < SAME_SIDE_STOP_2) {
-			driveForward(frontL, frontR, backL, backR, gyro, -90);
-		}
+		//else if(gyro.getAngle() <= (-90 + LEFT_DRIFT_ADJUSTMENT) && time < SAME_SIDE_STOP_2) {
+			//driveForward(frontL, frontR, backL, backR, gyro, -90);
+		//}
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 		}
 	
 	}
@@ -137,7 +137,7 @@ public class Autos {
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.oppAutoShooterSpeed);
+			//shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.oppAutoShooterSpeed);
 		}
 		
 	}
@@ -170,7 +170,7 @@ public class Autos {
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
+			//shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
 		}
 	}
 	
@@ -200,7 +200,7 @@ public class Autos {
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
+			//shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
 		}
 		
 	}
@@ -326,17 +326,19 @@ public class Autos {
 	public boolean getSwitch(String data, int side) {
 		
 		// Getting the side of the switches on the field
+		//0 IS LEFT
 		
 		char switchPlacement = data.charAt(0);
 		
-		if(side == 0 && switchPlacement == 'L'){
+		if(side == 0 && switchPlacement =='L'){
 			return true;
 		}
 		
 		else if (side == 1 && switchPlacement == 'R') {
 			return true;
 		}
-		
+		else{
 		return false;
+		}
 	}
 }

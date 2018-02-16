@@ -165,8 +165,12 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putNumber("Gyro Value: ", Gyro.getAngle());
 		
 		timeInAuto=System.currentTimeMillis() - autoStartTime;
+	
 		switch (autoSelected) {
+		
 		case leftAuto:
+			//left left WORKS
+			//left right gyro reading incorrect during 2nd turn
 			if(auto.getSwitch(gameData, 0)){
 				auto.leftLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
@@ -175,6 +179,8 @@ public class Robot extends IterativeRobot {
 			}
 			break;
 		case rightAuto:
+			//right right doesnt work because the robot turns right instead of left
+			//right left doesnt work because turns right and gyro reading incorrect during 2nd turn
 			if(auto.getSwitch(gameData, 1)){
 				auto.rightRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
@@ -182,6 +188,8 @@ public class Robot extends IterativeRobot {
 				auto.rightLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
 		case centerAuto:
+			//center right turns left, gyro reading incoorrect during 2nd turn
+			//center left gyro reading incorrect during 2nd turn
 			if(auto.getSwitch(gameData, 0)){
 				auto.centerLeft(frontLeft, frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}

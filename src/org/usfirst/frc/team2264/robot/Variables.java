@@ -21,8 +21,10 @@ public class Variables {
 
 	public static final double intakeSpeed = -1; ///SET THIS NUMBER///
 	public static final double conveyorSpeed = 1; //SET THIS NUMBER///
-	public static final double switchShooterSpeed = 1;//SET THIS NUMBER///
+	public static final double switchShooterSpeed = .9;//SET THIS NUMBER///
+	public static final double autoSwitchSpeed = .1;
 	public static final double oppAutoShooterSpeed = .9;
+	
 	public static final double scaleShooterSpeed = 1;//SET THIS NUMBER///
 
 	
