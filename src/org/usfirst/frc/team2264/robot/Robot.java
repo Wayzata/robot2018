@@ -147,6 +147,8 @@ public class Robot extends IterativeRobot {
 		
 		// Method that will run only one time in autonomous
 		Gyro.calibrate();
+		pneumatics.raiseShooter();
+		//lowers
 		autoStartTime = System.currentTimeMillis();
 		autoSelected = chooser.getSelected();
 		System.out.println("Auto selected: " + autoSelected);

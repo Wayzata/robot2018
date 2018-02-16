@@ -12,8 +12,8 @@ public class Autos {
 	
 	// Auto class that will contain the methods for each auto
 	
-	final static long SAME_SIDE_STOP_1 = 2000;
-	final static long SAME_SIDE_STOP_2 = 6000;
+	final static long SAME_SIDE_STOP_1 = 4550;
+	//final static long SAME_SIDE_STOP_2 = 9000;
 	
 	final static long OPP_SIDE_STOP_1 = 2000;
 	final static long OPP_SIDE_STOP_2 = 6000;
@@ -26,8 +26,8 @@ public class Autos {
 	final static int RIGHT_DRIFT_ADJUSTMENT = -15;
 	final static int LEFT_DRIFT_ADJUSTMENT = 15;
 	
-	final static double LEFT_MOTOR_ADJUSTMENT = .6;
-	final static double RIGHT_MOTOR_ADJUSTMENT = .6;
+	final static double LEFT_MOTOR_ADJUSTMENT = .8;
+	final static double RIGHT_MOTOR_ADJUSTMENT = .8;
 	
 	final static int RIGHT = 0;
 	final static int LEFT = 1;
@@ -50,12 +50,12 @@ public class Autos {
 			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
-		else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < SAME_SIDE_STOP_2) {
-			driveForward(frontL, frontR, backL, backR, gyro, 90);
-		}
+		//else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < SAME_SIDE_STOP_2) {
+			//driveForward(frontL, frontR, backL, backR, gyro, 90);
+		//}
 		else {
 			stop(frontL, frontR, backL, backR);
-			shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.scaleShooterSpeed);
 		}
 		
 	}
@@ -319,30 +319,7 @@ public class Autos {
 		frontR.set(ControlMode.PercentOutput, 0);
 		backR.set(ControlMode.PercentOutput, 0);
 	}
-	
-// Shoot
-/* -------------------------- */
-	
-	public void shoot(TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, 
-						Shooter shooter, Conveyor conveyor, Pneumatic pneumatics, long time, double speed){
 		
-		// Fires the box onto the switch
-		if(time < 2500){
-			shooter.startShooter(shooterLeft, shooterRight, speed);
-			pneumatics.lowerShooter();
-		}
-		
-		else if(time >= 2500 && time < 3500){
-			conveyor.startConveyor(conveyorLeft, conveyorRight);
-		}
-		
-		else {
-			//shooter.stopShooter(shooterLeft, conveyorRight);
-			conveyor.stopConveyor(conveyorLeft, conveyorRight);
-		}
-	}
-	
-	
 // Switch
 /* -------------------------- */
 
