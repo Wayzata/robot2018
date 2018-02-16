@@ -64,7 +64,8 @@ public class Robot extends IterativeRobot {
 	TalonSRX conveyorRight;
 	TalonSRX shooterLeft;
 	TalonSRX shooterRight;
-	TalonSRX liftMotor;
+	TalonSRX shooterFeedL;
+	TalonSRX shooterFeedR;
 	
 	//CameraServer
 	CameraServer intakeCamera;
@@ -91,9 +92,10 @@ public class Robot extends IterativeRobot {
 		frontRight = new TalonSRX(Variables.frontRN);
 		backLeft = new TalonSRX(Variables.backLN);
 		backRight = new TalonSRX(Variables.backRN);
-		liftMotor = new TalonSRX(Variables.liftElevator);
 		shooterLeft = new TalonSRX(Variables.shooterLeft);
 		shooterRight = new TalonSRX(Variables.shooterRight);
+		shooterFeedL = new TalonSRX(Variables.shooterFeedL);
+		shooterFeedR = new TalonSRX(Variables.shooterFeedR);
 		conveyorLeft = new TalonSRX(Variables.conveyorLeft);
 		conveyorRight = new TalonSRX(Variables.conveyorRight);
 		intakeLeft = new TalonSRX(Variables.intakeLeft);
@@ -208,16 +210,15 @@ public class Robot extends IterativeRobot {
 		//shooter controls
 		if(controller.getBButton())
 		{
-			//System.out.println("Shooterstart");
-			
 			shooter.startShooter(shooterLeft, shooterRight, shootingSpeed);
-			
+			shooter.startFeeder(shooterFeedL, shooterFeedR, shootingSpeed);
 		}
 		else {
 			shooter.startShooter(shooterLeft, shooterRight, 0);
+			shooter.startFeeder(shooterFeedL, shooterFeedR, 0);
 		}
 		
-		//intake control
+		//Intake control
 		if(controller.getXButton()) {
 			conveyor.startConveyor(conveyorLeft, conveyorRight);
 		}
@@ -243,14 +244,14 @@ public class Robot extends IterativeRobot {
 	}
 	
 	void checkIntakeControls() {
-		if(leftJ.getRawButton(1)) {//3
+		if(leftJ.getRawButton(3)) {
 			intake.doubleIntake(intakeLeft,	intakeRight);
 		}
 		else if(leftJ.getRawButton(2)){
 			intake.doubleOutput(intakeLeft, intakeRight);
 		}
 	
-		else if(rightJ.getRawButton(2)) {
+		else if(rightJ.getRawButton(3)) {
 			intake.turn(intakeLeft, intakeRight);
 		}
 		else{
@@ -259,11 +260,13 @@ public class Robot extends IterativeRobot {
 	}
 	
 	void elevatorControls() {
-		if (controller.getTriggerAxis(GenericHID.Hand.kLeft)>.1) {
+		if (controller.getTriggerAxis(GenericHID.Hand.kRight)>.1) {
 			pneumatics.raiseShooter();
+			shootingSpeed = Variables.scaleShooterSpeed;
 		}
-		else if (controller.getTriggerAxis(GenericHID.Hand.kRight)>.1) {
+		else if (controller.getTriggerAxis(GenericHID.Hand.kLeft)>.1) {
 			pneumatics.lowerShooter();
+			shootingSpeed = Variables.switchShooterSpeed;
 		}
 	}
 	

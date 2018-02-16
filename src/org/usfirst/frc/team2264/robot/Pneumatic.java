@@ -19,11 +19,11 @@ public class Pneumatic {
 		compressor.setClosedLoopControl(true);
 	}
 	
-	public void raiseShooter() {
+	public void lowerShooter() {
 		shooterSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 	
-	public void lowerShooter() {
+	public void raiseShooter() {
 		shooterSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 	

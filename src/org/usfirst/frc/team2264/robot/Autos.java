@@ -50,14 +50,10 @@ public class Autos {
 			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
-		//else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < SAME_SIDE_STOP_2) {
-			//driveForward(frontL, frontR, backL, backR, gyro, 90);
-		//}
 		else {
 			stop(frontL, frontR, backL, backR);
 			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 		}
-		
 	}
 	
 	public void leftRight(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, long time,
@@ -85,7 +81,7 @@ public class Autos {
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			//shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.oppAutoShooterSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 		}
 	}
 	
@@ -102,14 +98,11 @@ public class Autos {
 		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
 			turn(frontL, frontR, backL, backR, LEFT);
 		}
-		//else if(gyro.getAngle() <= (-90 + LEFT_DRIFT_ADJUSTMENT) && time < SAME_SIDE_STOP_2) {
-			//driveForward(frontL, frontR, backL, backR, gyro, -90);
-		//}
+		
 		else {
 			stop(frontL, frontR, backL, backR);
 			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 		}
-	
 	}
 	
 	public void rightLeft(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, long time,
@@ -137,9 +130,8 @@ public class Autos {
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			//shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.oppAutoShooterSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 		}
-		
 	}
 	
 // Center	
@@ -170,7 +162,7 @@ public class Autos {
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			//shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 		}
 	}
 	
@@ -200,9 +192,8 @@ public class Autos {
 		
 		else {
 			stop(frontL, frontR, backL, backR);
-			//shoot(shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, time, Variables.switchShooterSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 		}
-		
 	}
 	
 // Forward/Turn/Back/Stop
