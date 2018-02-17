@@ -22,6 +22,6 @@ public class Intake {
 	}
 	public void turn(TalonSRX left, TalonSRX right) {
 		left.set(ControlMode.PercentOutput, -Variables.intakeSpeed);
-		right.set(ControlMode.PercentOutput, Variables.intakeSpeed);	}
+		right.set(ControlMode.PercentOutput, -Variables.intakeSpeed);	}
   
 }

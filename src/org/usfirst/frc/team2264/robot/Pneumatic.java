@@ -28,12 +28,12 @@ public class Pneumatic {
 	}
 	
 	public void extendArms() {
-		armsOut = true;
+		armsOut = false;
 		armsSolenoid.set(DoubleSolenoid.Value.kForward);
 	}
 	
 	public void retractArms() {
-		armsOut = false;
+		armsOut = true;
 		armsSolenoid.set(DoubleSolenoid.Value.kReverse);
 	}
 }

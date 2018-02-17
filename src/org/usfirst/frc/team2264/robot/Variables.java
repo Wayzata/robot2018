@@ -13,8 +13,8 @@ public class Variables {
 	public static final int frontLN = 6;
 	public static final int shooterLeft = 16;
 	public static final int shooterRight = 20;
-	public static final int shooterFeedL = 0; //FIND TALON
-	public static final int shooterFeedR = 0; //FIND TALON
+	public static final int shooterFeedL = 22; //FIND TALON
+	public static final int shooterFeedR = 23; //FIND TALON
 	public static final int conveyorLeft = 21;
 	public static final int conveyorRight = 17;
 	public static final int intakeLeft= 19;
@@ -23,7 +23,7 @@ public class Variables {
 	// Speeds in Teleop
 	public static final double intakeSpeed = -1; ///SET THIS NUMBER///
 	public static final double conveyorSpeed = 1; //SET THIS NUMBER///
-	public static final double switchShooterSpeed = .7;//SET THIS NUMBER///
+	public static final double switchShooterSpeed = 1;//SET THIS NUMBER///
 	public static final double scaleShooterSpeed = 1;//SET THIS NUMBER///
 	
 	// Speeds in Auto

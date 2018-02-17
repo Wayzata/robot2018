@@ -117,31 +117,11 @@ public class Robot extends IterativeRobot {
 		
 		auto = new Autos();
 		
-		
-		//Solenoid testSol = new Solenoid(1);
-		//testSol.set(on);
-	/*	
-		int readVal = solenoid.getAll();
-		SmartDashboard.putNumber("getAll", readVal);
-		readVal = solenoid.getPCMSolenoidBlackList();
-		SmartDashboard.putNumber("getPCM", readVal);
-		boolean boolVal = solenoid.getPCMSolenoidVoltageFault();
-		SmartDashboard.putBoolean("getPCMSolenoidVoltageFault", boolVal);
-		boolVal = solenoid.getPCMSolenoidVoltageStickyFault();
-		SmartDashboard.putBoolean("getPCMSolenoidVoltageStickyFault", boolVal);
-	 */		
-		
 		intakeCamera = CameraServer.getInstance();
 		shooterCamera = CameraServer.getInstance();
 		intakeCamera.startAutomaticCapture(1);
 		shooterCamera.startAutomaticCapture();
-
-		//smart dashboard
-
-		//chooser.addObject("Center Auto", centerAuto);
-		//chooser.addObject("Left Auto", leftAuto);
-		//chooser.addObject("Right Auto", rightAuto);
-		//SmartDashboard.putData("Auto choices", chooser);
+	
 		DashBoard();
 	}
 	
@@ -149,7 +129,7 @@ public class Robot extends IterativeRobot {
 		
 		// Method that will run only one time in autonomous
 		Gyro.calibrate();
-		pneumatics.raiseShooter();
+		pneumatics.lowerShooter();
 		//lowers
 		autoStartTime = System.currentTimeMillis();
 		autoSelected = chooser.getSelected();
@@ -184,9 +164,11 @@ public class Robot extends IterativeRobot {
 			//right right doesnt work because the robot turns right instead of left
 			//right left doesnt work because turns right and gyro reading incorrect during 2nd turn
 			if(auto.getSwitch(gameData, 1)){
+				System.out.println("RIGHT RIGHT");
 				auto.rightRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
 			else{
+				System.out.println("RIGHT LEFT");
 				auto.rightLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
 		case centerAuto:
@@ -291,6 +273,10 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Auto", rightAuto);
 		chooser.addDefault("No Auto", noAuto);
 		SmartDashboard.putData("Auto choices", chooser);
+		
+		SmartDashboard.putString("Intake Camera", "");
+		SmartDashboard.putString("Shooter Camera", "");
+		
 	}
 
 	/**

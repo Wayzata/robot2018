@@ -27,23 +27,11 @@ public class Shooter {
 	}
 	
 	public void startFeeder(TalonSRX left, TalonSRX right, double speed) {
-		if(speed!=0){
-			if(currentSpeed==0){
+		
 		left.set(ControlMode.PercentOutput, speed * -1);
 		right.set(ControlMode.PercentOutput, speed);
-		currentSpeed=speed;
-		System.out.println(currentSpeed);
-			}
-		}
-		else {
-			if(currentSpeed!=0){
-			left.set(ControlMode.PercentOutput, speed);
-			right.set(ControlMode.PercentOutput, speed);
-			currentSpeed=speed;
-			}
-		}
+		
 	}
-	
 	
 /*	public void stopShooter(TalonSRX left, TalonSRX right) {
 		

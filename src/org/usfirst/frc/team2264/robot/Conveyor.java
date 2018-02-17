@@ -8,7 +8,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 public class Conveyor {
 	
 	public void startConveyor(TalonSRX left, TalonSRX right) {
-		left.set(ControlMode.PercentOutput, Variables.conveyorSpeed);
+		left.set(ControlMode.PercentOutput, Variables.conveyorSpeed * -1);
 		right.set(ControlMode.PercentOutput, Variables.conveyorSpeed);
 	}
 	
@@ -18,7 +18,7 @@ public class Conveyor {
 	}
 	
 	public void reverseConveyor(TalonSRX left, TalonSRX right){
-		left.set(ControlMode.PercentOutput, Variables.conveyorSpeed * -1);
+		left.set(ControlMode.PercentOutput, Variables.conveyorSpeed);
 		right.set(ControlMode.PercentOutput, Variables.conveyorSpeed * -1);
 		
 	}
