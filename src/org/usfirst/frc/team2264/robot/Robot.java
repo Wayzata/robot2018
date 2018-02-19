@@ -154,10 +154,10 @@ public class Robot extends IterativeRobot {
 			//left left WORKS
 			//left right gyro reading incorrect during 2nd turn
 			if(auto.getSwitch(gameData, 0)){
-				auto.leftLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
+				auto.leftLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, shooterFeedL, shooterFeedR);
 			}
 			else{
-				auto.leftRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
+				auto.leftRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics,shooterFeedL, shooterFeedR);
 			}
 			break;
 		case rightAuto:
@@ -165,11 +165,11 @@ public class Robot extends IterativeRobot {
 			//right left doesnt work because turns right and gyro reading incorrect during 2nd turn
 			if(auto.getSwitch(gameData, 1)){
 				System.out.println("RIGHT RIGHT");
-				auto.rightRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
+				auto.rightRight(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics, shooterFeedL, shooterFeedR);
 			}
 			else{
 				System.out.println("RIGHT LEFT");
-				auto.rightLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
+				auto.rightLeft(frontLeft,frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics,shooterFeedL, shooterFeedR);
 			}
 		case centerAuto:
 			//center right turns left, gyro reading incoorrect during 2nd turn

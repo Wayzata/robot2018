@@ -23,11 +23,11 @@ public class Variables {
 	// Speeds in Teleop
 	public static final double intakeSpeed = -1; ///SET THIS NUMBER///
 	public static final double conveyorSpeed = 1; //SET THIS NUMBER///
-	public static final double switchShooterSpeed = 1;//SET THIS NUMBER///
+	public static final double switchShooterSpeed = .4;//SET THIS NUMBER///
 	public static final double scaleShooterSpeed = 1;//SET THIS NUMBER///
 	
 	// Speeds in Auto
-	public static final double autoSwitchSpeed = .1;
+	public static final double autoSwitchSpeed = .45;
 	
 	// Joysticks
 	public static final int rightStickPort = 0;

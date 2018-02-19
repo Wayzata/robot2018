@@ -12,27 +12,28 @@ public class Autos {
 	
 	// Auto class that will contain the methods for each auto
 	
-	final static long SAME_SIDE_STOP_1 = 3100;
-	final static long SAME_SIDE_STOP_2 = 9000;
+	final static long SAME_SIDE_STOP_1 = 4470;
+	final static long SAME_SIDE_STOP_2 = 7000;
 	
-	final static long OPP_SIDE_STOP_1 = 2000;
-	final static long OPP_SIDE_STOP_2 = 6000;
-	final static long OPP_SIDE_STOP_3 = 10000;
+	final static long OPP_SIDE_STOP_1 = 5980;
+	final static long OPP_SIDE_STOP_2 = 11900;
+	final static long OPP_SIDE_STOP_3 = 9500;
 	
 	final static long CENTER_STOP_1 = 2000;
 	final static long CENTER_STOP_2 = 4000;
 	final static long CENTER_STOP_3 = 10000;
 	
-	final static int RIGHT_DRIFT_ADJUSTMENT = -20; //-15
-	final static int LEFT_DRIFT_ADJUSTMENT = 20; //15
+	final static int RIGHT_DRIFT_ADJUSTMENT = -40; //-15
+	final static int LEFT_DRIFT_ADJUSTMENT = 40; //15
 	
-	final static double LEFT_MOTOR_ADJUSTMENT = .25;
+	final static double LEFT_MOTOR_ADJUSTMENT = .23;
 	final static double RIGHT_MOTOR_ADJUSTMENT = .35;
+	final static double OPP_MOTOR_SPEED = .5;
 	
 	final static int RIGHT = 0;
 	final static int LEFT = 1;
 	
-	double motorPer = 1;
+	double motorPercent = 1;
 	double turnPer = 1;
 	
 	
@@ -40,87 +41,101 @@ public class Autos {
 /* --------------------------- */
 	
 	public void leftLeft(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, long time,
-							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, Conveyor conveyor, Pneumatic pneumatics) {
+							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, 
+							Conveyor conveyor, Pneumatic pneumatics, TalonSRX shooterFeedL, TalonSRX shooterFeedR) {
 		
 		if(time < SAME_SIDE_STOP_1) {
-			driveForward(frontL, frontR, backL, backR, gyro, 0);
+			driveForward(frontL, frontR, backL, backR, gyro, 0,motorPercent);
 		}
 		
 		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() < (90 + RIGHT_DRIFT_ADJUSTMENT)) {
-			//turn(frontL, frontR, backL, backR, RIGHT);
+			turn(frontL, frontR, backL, backR, RIGHT);
+		}
+		
+		else if(time < SAME_SIDE_STOP_2){
+			stop(frontL, frontR, backL, backR);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
+			shooter.startFeeder(shooterFeedL, shooterFeedR, Variables.autoSwitchSpeed);
 		}
 		
 		else {
-			stop(frontL, frontR, backL, backR);
-			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, 0);
+			shooter.startFeeder(shooterFeedL,  shooterFeedR, 0);
 		}
 	}
 	
 	public void leftRight(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, long time,
-							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, Conveyor conveyor, Pneumatic pneumatics) {
+							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter,
+							Conveyor conveyor, Pneumatic pneumatics, TalonSRX shooterFeedL, TalonSRX shooterFeedR) {
 		
 		if(time < OPP_SIDE_STOP_1) {
 			System.out.println("Driving forward 1");
-			driveForward(frontL, frontR, backL, backR, gyro, 0);
+			driveForward(frontL, frontR, backL, backR, gyro, 0,1.5);
 		}
 		
 		else if(time >= OPP_SIDE_STOP_1 && gyro.getAngle() < (90 + RIGHT_DRIFT_ADJUSTMENT)) {
 			System.out.println("1st turn");
-			//turn(frontL, frontR, backL, backR, RIGHT);
+			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
 		else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_2) {
 			System.out.println("Driving forward 2");
-			driveForward(frontL, frontR, backL, backR, gyro, 90);
+			driveForward(frontL, frontR, backL, backR, gyro, 90,1.5);
 		}
 		
 		else if(time >= OPP_SIDE_STOP_2 && gyro.getAngle() < (180 + RIGHT_DRIFT_ADJUSTMENT)) {
 			System.out.println("2nd turn");
-			//turn(frontL, frontR, backL, backR, RIGHT);
+			turn(frontL, frontR, backL, backR, RIGHT);
 		}
 		
-		else if(gyro.getAngle() >= (180 + RIGHT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_3) {
-			System.out.println("Driving forward 3");
-			driveForward(frontL, frontR, backL, backR, gyro, 180);
-		}
-		
-		else {
+		else{
 			stop(frontL, frontR, backL, backR);
 			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
+			shooter.startFeeder(shooterFeedL, shooterFeedR, Variables.autoSwitchSpeed);
 		}
+		
+		/*else {
+			shooter.startShooter(shooterLeft, shooterRight, 0);
+			shooter.startFeeder(shooterFeedL,  shooterFeedR, 0);
+		}*/
+		
 	}
 	
 // Starting Right
 /* --------------------------- */
 	
 	public void rightRight(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, long time,
-							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, Conveyor conveyor, Pneumatic pneumatics) {
+							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, 
+							Conveyor conveyor, Pneumatic pneumatics, TalonSRX shooterFeedL, TalonSRX shooterFeedR) {
 		
 		
 		if(time < SAME_SIDE_STOP_1) {
-			driveForward(frontL, frontR, backL, backR, gyro, 0);
-			System.out.println("RR-Forward");
+			driveForward(frontL, frontR, backL, backR, gyro, 0,motorPercent);
 		}
 		
 		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
-			System.out.println(gyro.getAngle());
 			turn(frontL, frontR, backL, backR, LEFT);
-			System.out.println("RR-Turning");
+		}
+		
+		else if(time < SAME_SIDE_STOP_2){
+			stop(frontL, frontR, backL, backR);
+			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
+			shooter.startFeeder(shooterFeedL, shooterFeedR, Variables.autoSwitchSpeed);
 		}
 		
 		else {
-			System.out.println("RR-STOP");
-			stop(frontL, frontR, backL, backR);
-			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
+			shooter.startShooter(shooterLeft, shooterRight, 0);
+			shooter.startFeeder(shooterFeedL,  shooterFeedR, 0);
 		}
 	}
 	
 	public void rightLeft(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, long time,
-							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, Conveyor conveyor, Pneumatic pneumatics) {
+							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter,
+							Conveyor conveyor, Pneumatic pneumatics,TalonSRX shooterFeedL, TalonSRX shooterFeedR) {
 		
 		if(time < OPP_SIDE_STOP_1) {
 			System.out.println("Driving forward 1");
-			driveForward(frontL, frontR, backL, backR, gyro, 0);
+			driveForward(frontL, frontR, backL, backR, gyro, 0,1.5);
 		}
 		
 		else if(time >= OPP_SIDE_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
@@ -130,7 +145,7 @@ public class Autos {
 		
 		else if(gyro.getAngle() <= (-90 + LEFT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_2) {
 			System.out.println("Driving forward 2");
-			driveForward(frontL, frontR, backL, backR, gyro, -90);
+			driveForward(frontL, frontR, backL, backR, gyro, -90,motorPercent*1.5);
 		}
 		
 		else if(time >= OPP_SIDE_STOP_2 && gyro.getAngle() > (-180 + LEFT_DRIFT_ADJUSTMENT)) {
@@ -138,14 +153,10 @@ public class Autos {
 			turn(frontL, frontR, backL, backR, LEFT);
 		}
 		
-		else if(gyro.getAngle() <= (-180 + LEFT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_3) {
-			System.out.println("Driving forward 3");
-			driveForward(frontL, frontR, backL, backR, gyro, -180);
-		}
-		
 		else {
 			stop(frontL, frontR, backL, backR);
 			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
+			shooter.startFeeder(shooterFeedL, shooterFeedR, Variables.autoSwitchSpeed);
 		}
 	}
 	
@@ -156,7 +167,7 @@ public class Autos {
 							TalonSRX shooterLeft, TalonSRX shooterRight, TalonSRX conveyorLeft, TalonSRX conveyorRight, Shooter shooter, Conveyor conveyor, Pneumatic pneumatics) {
 		
 		if (time < CENTER_STOP_1) {
-			driveForward(frontL, frontR, backL, backR, gyro, 0);
+			driveForward(frontL, frontR, backL, backR, gyro, 0,motorPercent);
 		}
 		
 		else if(time >= CENTER_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
@@ -164,7 +175,7 @@ public class Autos {
 		}
 		
 		else if(gyro.getAngle() <= (90 + LEFT_DRIFT_ADJUSTMENT) && time < CENTER_STOP_2) {
-			driveForward(frontL, frontR, backL, backR, gyro, -90);
+			driveForward(frontL, frontR, backL, backR, gyro, -90,motorPercent);
 		}
 		
 		else if(time >= CENTER_STOP_2 && gyro.getAngle() < (0 + RIGHT_DRIFT_ADJUSTMENT)) {
@@ -186,7 +197,7 @@ public class Autos {
 							Shooter shooter, Conveyor conveyor, Pneumatic pneumatics) {
 		
 		if (time < CENTER_STOP_1) {
-			driveForward(frontL, frontR, backL, backR, gyro, 0);
+			driveForward(frontL, frontR, backL, backR, gyro, 0,motorPercent);
 		}
 		
 		else if(time >= CENTER_STOP_1 && gyro.getAngle() < (90 + RIGHT_DRIFT_ADJUSTMENT)) {
@@ -194,7 +205,7 @@ public class Autos {
 		}
 		
 		else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < CENTER_STOP_2) {
-			driveForward(frontL, frontR, backL, backR, gyro, 90);
+			driveForward(frontL, frontR, backL, backR, gyro, 90,motorPercent);
 		}
 		
 		else if(time >= CENTER_STOP_2 && gyro.getAngle() > (0 + LEFT_DRIFT_ADJUSTMENT)) {
@@ -202,7 +213,7 @@ public class Autos {
 		}
 		
 		else if(gyro.getAngle() <= (0 + LEFT_DRIFT_ADJUSTMENT) && time < CENTER_STOP_3) {
-			driveForward(frontL, frontR, backL, backR, gyro, 0);
+			driveForward(frontL, frontR, backL, backR, gyro, 0,motorPercent);
 		}
 		
 		else {
@@ -214,7 +225,7 @@ public class Autos {
 // Forward/Turn/Back/Stop
 /* --------------------------- */
 	
-	public void driveForward(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR) {
+	public void driveForward(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, double motorPer) {
 		
 		// Method to drive forward without using bearings
 		
@@ -225,13 +236,13 @@ public class Autos {
 		backR.set(ControlMode.PercentOutput, -1 * motorPer * RIGHT_MOTOR_ADJUSTMENT);
 		
 	}
-	
-	public void driveForward(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, int bearing) {
+
+	public void driveForward(TalonSRX frontL, TalonSRX frontR, TalonSRX backL, TalonSRX backR, ADXRS450_Gyro gyro, int bearing, double motorPer) {
 		
 		// Method to drive forward using bearings
 		
 		if(Math.abs(gyro.getAngle() - bearing) < 2) {
-			driveForward(frontL, frontR, backL, backR);
+			driveForward(frontL, frontR, backL, backR,motorPer);
 		}
 		
 		else if(gyro.getAngle() < bearing) {
