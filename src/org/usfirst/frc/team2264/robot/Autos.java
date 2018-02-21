@@ -13,7 +13,8 @@ public class Autos {
 	// Auto class that will contain the methods for each auto
 	
 	final static long SAME_SIDE_STOP_1 = 4470;
-	final static long SAME_SIDE_STOP_2 = 7000;
+	final static long SAME_SIDE_STOP_2 = 6900;
+	final static long SAME_SIDE_STOP_3 = 7500;
 	final static Double fastAuto =1.75;
 	final static long OPP_SIDE_STOP_1 = 3100; //3154
 	final static long OPP_SIDE_STOP_2 = 6700;
@@ -51,8 +52,10 @@ public class Autos {
 		else if(time >= SAME_SIDE_STOP_1 && gyro.getAngle() < (90 + RIGHT_DRIFT_ADJUSTMENT)) {
 			turn(frontL, frontR, backL, backR, RIGHT);
 		}
-		
-		else if(time < SAME_SIDE_STOP_2){
+		else if(time<= SAME_SIDE_STOP_2 && gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT)) {
+			driveForward(frontL, frontR, backL, backR, gyro, 90, .5);
+		}
+		else if(time < SAME_SIDE_STOP_3){
 			stop(frontL, frontR, backL, backR);
 			shooter.startShooter(shooterLeft, shooterRight, Variables.autoSwitchSpeed);
 			shooter.startFeeder(shooterFeedL, shooterFeedR, Variables.autoSwitchSpeed);
