@@ -35,6 +35,7 @@ public class Robot extends IterativeRobot {
 	final String centerAuto = "Center Auto";
 	final String leftAuto= "Left Auto";
 	final String rightAuto= "Right Auto";
+	final String straightAuto= "Straight Auto";
 	final String noAuto="noAuto";
 	
 	String autoSelected;
@@ -181,6 +182,14 @@ public class Robot extends IterativeRobot {
 				auto.centerRight(frontLeft, frontRight, backLeft, backRight, Gyro, timeInAuto, shooterLeft, shooterRight, conveyorLeft, conveyorRight, shooter, conveyor, pneumatics);
 			}
 			break;
+		case straightAuto:
+			if(timeInAuto<4500){
+				auto.driveForward(frontLeft, frontRight, backLeft, backRight, Gyro, 0, 1);
+			}
+			else{
+				auto.stop(frontLeft, frontRight, backLeft, backRight);
+			}
+			break;
 		default:
 			auto.stop(frontLeft, frontRight, backLeft, backRight);
 			break;
@@ -273,6 +282,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Center Auto", centerAuto);
 		chooser.addObject("Left Auto", leftAuto);
 		chooser.addObject("Right Auto", rightAuto);
+		chooser.addObject("Straight Auto", straightAuto);
 		chooser.addDefault("No Auto", noAuto);
 		SmartDashboard.putData("Auto choices", chooser);
 		
