@@ -14,10 +14,10 @@ public class Autos {
 	
 	final static long SAME_SIDE_STOP_1 = 4470;
 	final static long SAME_SIDE_STOP_2 = 7000;
-	
-	final static long OPP_SIDE_STOP_1 = 5980;
-	final static long OPP_SIDE_STOP_2 = 11900;
-	final static long OPP_SIDE_STOP_3 = 9500;
+	final static Double fastAuto =1.5;
+	final static long OPP_SIDE_STOP_1 = 5980/fastAuto.longValue();
+	final static long OPP_SIDE_STOP_2 = 11900/fastAuto.longValue();
+	final static long OPP_SIDE_STOP_3 = 9500/fastAuto.longValue();
 	
 	final static long CENTER_STOP_1 = 2000;
 	final static long CENTER_STOP_2 = 4000;

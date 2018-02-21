@@ -11,21 +11,21 @@ public class Shooter {
 	public void startShooter(TalonSRX left, TalonSRX right, double speed) {
 		if(speed!=0){
 			if(currentSpeed==0){
-		left.set(ControlMode.PercentOutput, speed * -1);
-		right.set(ControlMode.PercentOutput, speed);
-		currentSpeed=speed;
-		System.out.println(currentSpeed);
+				left.set(ControlMode.PercentOutput, speed * -1);
+				right.set(ControlMode.PercentOutput, speed);
+				currentSpeed=speed;
+				System.out.println(currentSpeed);
 			}
 		}
 		else {
 			if(currentSpeed!=0){
-			left.set(ControlMode.PercentOutput, speed);
-			right.set(ControlMode.PercentOutput, speed);
-			currentSpeed=speed;
+				left.set(ControlMode.PercentOutput, speed);
+				right.set(ControlMode.PercentOutput, speed);
+				currentSpeed=speed;
 			}
 		}
 	}
-	
+
 	public void startFeeder(TalonSRX left, TalonSRX right, double speed) {
 		
 		left.set(ControlMode.PercentOutput, speed * -1);
@@ -33,10 +33,8 @@ public class Shooter {
 		
 	}
 	
-/*	public void stopShooter(TalonSRX left, TalonSRX right) {
-		
-		left.set(ControlMode.PercentOutput, 0);
-		right.set(ControlMode.PercentOutput, 0);
+	public void reverseFeed( TalonSRX left, TalonSRX right, double speed){
+		left.set(ControlMode.PercentOutput, speed);
+		right.set(ControlMode.PercentOutput, -1*speed);
 	}
-	*/
 }

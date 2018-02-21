@@ -188,12 +188,16 @@ public class Robot extends IterativeRobot {
 	}
 	
 	void checkButtons() {
-		
 		//shooter controls
 		if(controller.getBButton())
 		{
 			shooter.startShooter(shooterLeft, shooterRight, shootingSpeed);
 			shooter.startFeeder(shooterFeedL, shooterFeedR, shootingSpeed);
+		}
+		else if(controller.getBackButton())
+		{
+			shooter.startShooter(shooterLeft, shooterRight, -shootingSpeed);
+			shooter.startFeeder(shooterFeedL, shooterFeedR, -shootingSpeed);
 		}
 		else {
 			shooter.startShooter(shooterLeft, shooterRight, 0);
@@ -217,9 +221,7 @@ public class Robot extends IterativeRobot {
 		if(controller.getYButton()) {
 			pneumatics.retractArms();
 		}
-		if(controller.getBackButton()) {
-			shootingSpeed=Variables.switchShooterSpeed;
-		}
+		
 		
 		
 		
