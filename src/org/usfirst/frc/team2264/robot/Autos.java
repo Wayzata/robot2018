@@ -14,13 +14,13 @@ public class Autos {
 	
 	final static long SAME_SIDE_STOP_1 = 4470;
 	final static long SAME_SIDE_STOP_2 = 7000;
-	final static Double fastAuto =1.5;
-	final static long OPP_SIDE_STOP_1 = 5980/fastAuto.longValue();
-	final static long OPP_SIDE_STOP_2 = 11900/fastAuto.longValue();
-	final static long OPP_SIDE_STOP_3 = 9500/fastAuto.longValue();
+	final static Double fastAuto =1.75;
+	final static long OPP_SIDE_STOP_1 = 3100; //3154
+	final static long OPP_SIDE_STOP_2 = 6700;
+	final static long OPP_SIDE_STOP_3 = 9000;
 	
 	final static long CENTER_STOP_1 = 2000;
-	final static long CENTER_STOP_2 = 4000;
+	final static long CENTER_STOP_2 = 1090;
 	final static long CENTER_STOP_3 = 10000;
 	
 	final static int RIGHT_DRIFT_ADJUSTMENT = -40; //-15
@@ -70,7 +70,7 @@ public class Autos {
 		
 		if(time < OPP_SIDE_STOP_1) {
 			System.out.println("Driving forward 1");
-			driveForward(frontL, frontR, backL, backR, gyro, 0,1.5);
+			driveForward(frontL, frontR, backL, backR, gyro, 0, fastAuto);
 		}
 		
 		else if(time >= OPP_SIDE_STOP_1 && gyro.getAngle() < (90 + RIGHT_DRIFT_ADJUSTMENT)) {
@@ -80,12 +80,16 @@ public class Autos {
 		
 		else if(gyro.getAngle() >= (90 + RIGHT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_2) {
 			System.out.println("Driving forward 2");
-			driveForward(frontL, frontR, backL, backR, gyro, 90,1.5);
+			driveForward(frontL, frontR, backL, backR, gyro, 90, fastAuto);
 		}
 		
 		else if(time >= OPP_SIDE_STOP_2 && gyro.getAngle() < (180 + RIGHT_DRIFT_ADJUSTMENT)) {
 			System.out.println("2nd turn");
 			turn(frontL, frontR, backL, backR, RIGHT);
+		}
+		else if((gyro.getAngle() >= (180 + RIGHT_DRIFT_ADJUSTMENT))&&(time< OPP_SIDE_STOP_3)){
+			System.out.println("DRIVE FORWARD 3");
+			driveForward(frontL, frontR, backL, backR, gyro, 90, .5);
 		}
 		
 		else{
@@ -135,7 +139,7 @@ public class Autos {
 		
 		if(time < OPP_SIDE_STOP_1) {
 			System.out.println("Driving forward 1");
-			driveForward(frontL, frontR, backL, backR, gyro, 0,1.5);
+			driveForward(frontL, frontR, backL, backR, gyro, 0, fastAuto);
 		}
 		
 		else if(time >= OPP_SIDE_STOP_1 && gyro.getAngle() > (-90 + LEFT_DRIFT_ADJUSTMENT)) {
@@ -145,7 +149,7 @@ public class Autos {
 		
 		else if(gyro.getAngle() <= (-90 + LEFT_DRIFT_ADJUSTMENT) && time < OPP_SIDE_STOP_2) {
 			System.out.println("Driving forward 2");
-			driveForward(frontL, frontR, backL, backR, gyro, -90,motorPercent*1.5);
+			driveForward(frontL, frontR, backL, backR, gyro, -90,fastAuto);
 		}
 		
 		else if(time >= OPP_SIDE_STOP_2 && gyro.getAngle() > (-180 + LEFT_DRIFT_ADJUSTMENT)) {
